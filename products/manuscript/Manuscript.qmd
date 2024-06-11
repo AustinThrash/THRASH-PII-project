@@ -1,22 +1,17 @@
 ---
-title: "Example Manuscript Template for a Data Analysis Project"
+title: "Manuscript for a Data Analysis Project: Diabetes Diagnosis"
 subtitle: ""
-author: Andreas Handel
-date: "`r Sys.Date()`"
+author: Austin Thrash
+date: today
 format:
-  docx:
-    toc: false
+  html:
+    toc: true
+    toc-location: left
     number-sections: true
     highlight-style: github
-bibliography: ../../assets/dataanalysis-references.bib
-csl: ../../assets/apa.csl
+bibliography: ../dataanalysis-template-references.bib
+csl: ../apa.csl
 ---
-
-The structure below is one possible setup for a data analysis project (including the course project). For a manuscript, adjust as needed. 
-You don't need to have exactly these sections, but the content covering those sections should be addressed.
-
-This uses MS Word as output format. [See here](https://quarto.org/docs/output-formats/ms-word.html) for more information. You can switch to other formats, like html or pdf. See [the Quarto documentation](https://quarto.org/) for other formats.
-
 
 ```{r, echo=FALSE, message=FALSE}
 # load a few R packages
@@ -24,76 +19,101 @@ library(here)
 library(knitr)
 ```
 
-
-
 # Summary/Abstract
-_Write a summary of your project._
 
+*\*Summary will be finalized in later part of project and will include setup and results*
 
 {{< pagebreak >}}
 
-
-# Introduction 
+# Introduction
 
 ## General Background Information
-_Provide enough background on your topic that others can understand the why and how of your analysis_ 
+
+*\*more background information will be added later, I will describe what diabetes is, what are the notable influences on diagnosis, and what the dataset provides in relation to other studies on diabetes diagnosis.*
 
 ## Description of data and data source
-_Describe what the data is, what it contains, where it is from, etc. Eventually this might be part of a methods section._
+
+This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions
+
+| Feature              | Description                                                                                                                                                                                                                                                                                                                             |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ID                   | Patient ID                                                                                                                                                                                                                                                                                                                              |
+| Diabetes_binary      | 0 = no diabetes 1 = prediabetes or diabetes                                                                                                                                                                                                                                                                                             |
+| HighBP               | 0 = no high BP 1 = high BP                                                                                                                                                                                                                                                                                                              |
+| HighChol             | 0 = no high cholesterol 1 = high cholesterol                                                                                                                                                                                                                                                                                            |
+| CholCheck            | 0 = no cholesterol check in 5 years 1 = yes cholesterol check in 5 years                                                                                                                                                                                                                                                                |
+| BMI                  | Body Mass Index                                                                                                                                                                                                                                                                                                                         |
+| Smoker               | Have you smoked at least 100 cigarettes in your entire life? \[Note: 5 packs = 100 cigarettes\] 0 = no 1 = yes                                                                                                                                                                                                                          |
+| Stoke                | (Ever told) you had a stroke. 0 = no 1 = yes                                                                                                                                                                                                                                                                                            |
+| HeartDiseaseorAttack | coronary heart disease (CHD) or myocardial infarction (MI) 0 = no 1 = yes                                                                                                                                                                                                                                                               |
+| PhysActivity         | physical activity in past 30 days - not including job 0 = no 1 = yes                                                                                                                                                                                                                                                                    |
+| Fruits               | Consume Fruit 1 or more times per day 0 = no 1 = yes                                                                                                                                                                                                                                                                                    |
+| Veggies              | Consume Vegetables 1 or more times per day 0 = no 1 = yes                                                                                                                                                                                                                                                                               |
+| HvyAlchoholConsump   | Heavy drinkers (adult men having more than 14 drinks per week and adult women having more than 7 drinks per week) 0 = no 1 = yes                                                                                                                                                                                                        |
+| AnyHealthcare        | Have any kind of health care coverage, including health insurance, prepaid plans such as HMO, etc. 0 = no 1 = yes                                                                                                                                                                                                                       |
+| NoDocbcCost          | Was there a time in the past 12 months when you needed to see a doctor but could not because of cost? 0 = no 1 = yes                                                                                                                                                                                                                    |
+| GenHlth              | Would you say that in general your health is: scale 1-5 1 = excellent 2 = very good 3 = good 4 = fair 5 = poor                                                                                                                                                                                                                          |
+| MentHlth             | Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good? scale 1-30 days                                                                                                                                        |
+| PhysHlth             | Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good? scale 1-30 days                                                                                                                                                       |
+| DiffWalk             | Do you have serious difficulty walking or climbing stairs? 0 = no 1 = yes                                                                                                                                                                                                                                                               |
+| Sex                  | 0 = female 1 = male                                                                                                                                                                                                                                                                                                                     |
+| Age                  | 13-level age category (\_AGEG5YR see codebook) 1 = 18-24 9 = 60-64 13 = 80 or older                                                                                                                                                                                                                                                     |
+| Education            | Education level (EDUCA see codebook) scale 1-6 1 = Never attended school or only kindergarten 2 = Grades 1 through 8 (Elementary) 3 = Grades 9 through 11 (Some high school) 4 = Grade 12 or GED (High school graduate) 5 = College 1 year to 3 years (Some college or technical school) 6 = College 4 years or more (College graduate) |
+| Income               | Income scale (INCOME2 see codebook) scale 1-8 1 = less than \$10,000 5 = less than \$35,000 8 = \$75,000 or more                                                                                                                                                                                                                        |
+
+<https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators>
 
 ## Questions/Hypotheses to be addressed
-_State the research questions you plan to answer with this analysis._
 
-To cite other work (important everywhere, but likely happens first in introduction), make sure your references are in the bibtex file specified in the YAML header above and have the right bibtex key. Then you can include like this:
-
-Examples of reproducible research projects can for instance be found in [@mckay2020; @mckay2020a].
-
-
+"What are the key health indicators that predict the likelihood of an individual being diagnosed with diabetes?" Specifically, identifying which factors are most strongly associated with diabetes prevalence in the population.
 
 {{< pagebreak >}}
 
+# Methods
 
-# Methods 
-
-_Describe your methods. That should describe the data, the cleaning processes, and the analysis approaches. You might want to provide a shorter description here and all the details in the supplement._
-
-
-## Schematic of workflow
-
-Sometimes you might want to show a schematic diagram/figure that was not created with code (if you can do it with code, do it). @fig-schematic is an example of some - completely random/unrelated - schematic that was generated with Biorender.
-We store those figures in the `assets` folder.
+*\*Analysis methods will be included in later part of project*
 
 ```{r}
-#| label: fig-schematic
-#| fig-cap: "A figure that is manually generated and shows some overview/schematic. This has nothing to do with the data, it's just a random one from one of our projects I found and placed here."
-#| echo: FALSE
-knitr::include_graphics(here("assets","antigen-recognition.png"))
+library(readr)
 ```
 
+## Data acquisition
 
+### Explain the question to be answered using the data
 
+The main question I would like to answer with this project is "What are the key health indicators that predict the likelihood of an individual being diagnosed with diabetes?".
 
-## Data aquisition
-_As applicable, explain where and how you got the data. If you directly import the data from an online source, you can combine this section with the next._
+### What will be your outcome(s) of interest (if any)?
 
+The primary outcome of interest will be whether an individual has been diagnosed with diabetes or not. This outcome will be represented as a binary variable where 1 indicates a diabetes diagnosis and 0 indicates no diabetes.
+
+### What (if any) specific predictors will you focus on?
+
+The specific predictors I will focus on are age, gender, BMI, consumption of fruits and vegetables, and frequency of exercise. Although these are the main predictors I will focus on, I'll also use data analytic techniques to identify which predictors are of importance or have relationships with the response variable.
+
+### What relations/patterns are you looking for in the data?
+
+I will look for patterns ad relationships between the predictors and the outcome of diabetes diagnosis. More specifically, I will analyze correlations between individual predictors and the response variable, interaction effects between predictors and the response variable, and predictive models such as logistic regression, decision trees, and machine learning classifiers.
 
 ## Data import and cleaning
-_Write code that reads in the file and cleans it so it's ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what kind of cleaning/processing you do, and provide more details and well documented code somewhere (e.g. as supplement in a paper). All materials, including files that contain code, should be commented well so everyone can follow along._
 
+*\*To be added in later portion of project*
 
 ## Statistical analysis
-_Explain anything related to your statistical analyses._
 
+For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDCs website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will then split the data set into a training and test set using a 80/20 split and begin the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.
+
+***\* Any section past results has not been modified yet. I only completed the sections required for the first part.***
 
 {{< pagebreak >}}
-
 
 # Results
 
 ## Exploratory/Descriptive analysis
 
-_Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project._
+***\*To be added in later portion of project***
 
+*Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project.*
 
 @tbl-summarytable shows a summary of the data.
 
@@ -107,12 +127,11 @@ resulttable=readRDS("../../results/tables/summarytable.rds")
 knitr::kable(resulttable)
 ```
 
-
-
 ## Basic statistical analysis
 
-_To get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any "p<0.05 means statistical significance" interpretation is not valid._
+***\*To be added in later portion of project***
 
+*To get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any "p\<0.05 means statistical significance" interpretation is not valid.*
 
 @fig-result shows a scatterplot figure produced by one of the R scripts.
 
@@ -123,10 +142,11 @@ _To get some further insight into your data, if reasonable you could compute sim
 knitr::include_graphics(here("results","figures","height-weight-stratified.png"))
 ```
 
-
 ## Full analysis
 
-_Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here._
+***\*To be added in later portion of project***
+
+*Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.*
 
 Example @tbl-resulttable2 shows a summary of a linear model fit.
 
@@ -138,33 +158,38 @@ resulttable2 = readRDS(here("results","tables","resulttable2.rds"))
 knitr::kable(resulttable2)
 ```
 
-
 {{< pagebreak >}}
-
 
 # Discussion
 
 ## Summary and Interpretation
-_Summarize what you did, what you found and what it means._
+
+***\*To be added in later portion of project***
+
+*Summarize what you did, what you found and what it means.*
 
 ## Strengths and Limitations
-_Discuss what you perceive as strengths and limitations of your analysis._
+
+***\*To be added in later portion of project***
+
+*Discuss what you perceive as strengths and limitations of your analysis.*
 
 ## Conclusions
-_What are the main take-home messages?_
 
-_Include citations in your Rmd file using bibtex, the list of references will automatically be placed at the end_
+***\*To be added in later portion of project***
 
-This paper [@leek2015] discusses types of analyses. 
+*What are the main take-home messages?*
 
-These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template. 
+*Include citations in your Rmd file using bibtex, the list of references will automatically be placed at the end*
+
+This paper [@leek2015] discusses types of analyses.
+
+These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template.
 
 Note that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal [are available](https://www.zotero.org/styles). You also specify the location of your bibtex reference file in the YAML. You can call your reference file anything you like.
-
 
 {{< pagebreak >}}
 
 # References
 
-
-
+***\*To be added in later portion of project***
