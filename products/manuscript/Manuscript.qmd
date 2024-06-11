@@ -9,8 +9,8 @@ format:
     toc-location: left
     number-sections: true
     highlight-style: github
-bibliography: ../dataanalysis-template-references.bib
-csl: ../apa.csl
+bibliography: ../../assets/dataanalysis-template-references.bib
+csl: ../../assets/apa.csl
 ---
 
 ```{r, echo=FALSE, message=FALSE}
