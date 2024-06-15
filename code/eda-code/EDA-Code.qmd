@@ -1,0 +1,154 @@
+---
+title: "EDA Code"
+subtitle: ""
+author: Austin Thrash
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+    highlight-style: github
+csl: ../../assets/apa.csl
+---
+
+```{r}
+library(here) #for data loading/saving
+library(dplyr)
+library(skimr)
+library(ggplot2)
+library(readr)
+library(tidyr) # data wrangling
+library(rpart) # DT
+library(tidyverse)
+library(car)
+library(tree)
+library(caret)
+library(MASS)
+library(ROCR)
+library(randomForest)
+library(corrplot)
+library(ggcorrplot) # corr plot
+library(reshape2) # heat map
+library(GGally) # Pais ggplot2
+```
+
+# Reading in the Data
+
+```{r}
+#Path to data. Note the use of the here() package and not absolute paths
+data_location <- here::here("data","processed-data","processeddata.rds")
+#load data
+mydata <- readRDS(data_location)
+```
+
+```{r}
+summary_df = skimr::skim(mydata)
+print(summary_df)
+# save to file
+summarytable_file = here("results", "tables", "summarytable.rds")
+saveRDS(summary_df, file = summarytable_file)
+```
+
+# Simple Exploration
+
+```{r}
+
+```
+
+# Plots of Response/Features
+
+## Histogram
+
+```{r}
+p1 <- mydata %>% ggplot(aes(x=Diabetes_012)) + geom_histogram() 
+plot(p1)
+figure_file = here("results", "figures","diabetes-distribution.png")
+ggsave(filename = figure_file, plot=p1) 
+```
+
+```{r}
+p2 <- mydata %>% ggplot(aes(x=Smoker)) + geom_histogram() 
+plot(p2)
+figure_file = here("results", "figures","smoker-distribution.png")
+ggsave(filename = figure_file, plot=p2) 
+```
+
+```{r}
+p3 <- mydata %>% ggplot(aes(x=BMI)) + geom_histogram() 
+plot(p3)
+figure_file = here("results", "figures","BMI-distribution.png")
+ggsave(filename = figure_file, plot=p3) 
+```
+
+```{r}
+p4 <- mydata %>% ggplot(aes(x=PhysHlth)) + geom_histogram() 
+plot(p4)
+figure_file = here("results", "figures","PhysHlth-distribution.png")
+ggsave(filename = figure_file, plot=p4) 
+```
+
+```{r}
+p5 <- mydata %>% ggplot(aes(x=Age)) + geom_histogram() 
+plot(p5)
+figure_file = here("results", "figures","Age-distribution.png")
+ggsave(filename = figure_file, plot=p5) 
+```
+
+## Correlation Matrix
+
+```{r}
+library(corrplot)
+
+# Compute the correlation matrix for numerical attributes
+numerical_data <- mydata[, sapply(mydata, is.numeric)]
+cor_matrix <- cor(numerical_data)  # Handles missing values by excluding them
+
+# Define the file path to save the plot
+figure_file <- here("results", "figures", "correlation_matrix.png")
+
+# Save the correlation matrix plot
+png(filename = figure_file, width = 800, height = 600)
+corrplot(cor_matrix, method = "color", type = "upper", order = "hclust",
+         tl.col = "black", tl.srt = 45, addCoef.col = "black", number.cex = 0.5)
+dev.off()
+```
+
+```{r}
+mydata$Diabetes_012 <- as.factor(mydata$Diabetes_012)
+```
+
+# Features of Importance
+
+## Linear Model
+
+```{r}
+glm.full = glm(Diabetes_012 ~ ., data = mydata, family = binomial)
+
+glm.vif = vif(glm.full)
+
+glm.vif
+```
+
+## Random Forest
+
+```{r}
+set.seed(12345)
+import_features = train(Diabetes_012 ~ ., 
+               data = mydata, 
+               method = "rf", 
+               importance = TRUE, 
+               trControl = trainControl(method = "cv", number = 2, verbose = TRUE))
+```
+
+```{r}
+varimp_plot <- plot(varImp(import_features))
+
+# Define the file path to save the plot
+figure_file <- here("results", "figures", "variable_importance.png")
+
+# Save the plot
+png(filename = figure_file, width = 1000, height = 800)
+print(varimp_plot)
+dev.off()
+```

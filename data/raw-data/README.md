@@ -1,14 +1,4 @@
-#raw-data
+#Raw-Data
 
-This folder should contain all raw data. As needed add sub-folders.
-
-Currently, as an example, it contains a simple made-up data-set in an Excel file.
-
-The dataset contains the variables `Height`, `Weight` and `Gender` of a few imaginary individuals.
-
-The dataset purposefully contains some faulty entries that need to be cleaned.
-
-Generally, any dataset should contain some meta-data explaining what each variable in the dataset is. (This is often called a **Codebook**.) For this simple example, the codebook is given as a second sheet in the Excel file.
-
-This raw data-set should generally not be edited by hand. It should instead be loaded and processed/cleaned using code.
-
+This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions
+ID: Patient IDDiabetes_binary: 0 = no diabetes 1 = prediabetes or diabetesHighBP: 0 = no high BP 1 = high BPHighChol: 0 = no high cholesterol 1 = high cholesterolCholCheck: 0 = no cholesterol check in 5 years 1 = yes cholesterol check in 5 yearsBMI: Body Mass IndexSmoker: Have you smoked at least 100 cigarettes in your entire life? [Note: 5 packs = 100 cigarettes] 0 = no 1 = yesStoke: (Ever told) you had a stroke. 0 = no 1 = yesHeartDiseaseorAttack: coronary heart disease (CHD) or myocardial infarction (MI) 0 = no 1 = yesPhysActivity: physical activity in past 30 days - not including job 0 = no 1 = yesFruits: Consume Fruit 1 or more times per day 0 = no 1 = yesVeggies: Consume Vegetables 1 or more times per day 0 = no 1 = yesHvyAlchoholConsump: Heavy drinkers (adult men having more than 14 drinks per week and adult women having more than 7 drinks per week) 0 = no 1 = yesAnyHealthcare: Have any kind of health care coverage, including health insurance, prepaid plans such as HMO, etc. 0 = no 1 = yesNoDocbcCost: Was there a time in the past 12 months when you needed to see a doctor but could not because of cost? 0 = no 1 = yesGenHlth: Would you say that in general your health is: scale 1-5 1 = excellent 2 = very good 3 = good 4 = fair 5 = poorMentHlth: Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good? scale 1-30 daysPhysHlth: Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good? scale 1-30 daysDiffWalk: Do you have serious difficulty walking or climbing stairs? 0 = no 1 = yesSex: 0 = female 1 = maleAge: 13-level age category - 1 = 18-24 - 9 = 60-64 - 13 = 80 or olderEducation: Education level scale 1-6 1 = Never attended school or only kindergarten 2 = Grades 1 through 8 (Elementary) 3 = Grades 9 through 11 (Some high school) 4 = Grade 12 or GED (High school graduate) 5 = College 1 year to 3 years (Some college or technical school) 6 = College 4 years or more (College graduate)Income: Income scale 1-8 1 = less than $10,000 5 = less than $35,000 8 = $75,000 or more

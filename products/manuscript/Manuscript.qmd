@@ -9,7 +9,6 @@ format:
     toc-location: left
     number-sections: true
     highlight-style: github
-bibliography: ../../assets/dataanalysis-template-references.bib
 csl: ../../assets/apa.csl
 ---
 
@@ -36,7 +35,7 @@ library(knitr)
 This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions
 
 | Feature              | Description                                                                                                                                                                                                                                                                                                                             |
-|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|------------|------------------------------------------------------------|
 | ID                   | Patient ID                                                                                                                                                                                                                                                                                                                              |
 | Diabetes_binary      | 0 = no diabetes 1 = prediabetes or diabetes                                                                                                                                                                                                                                                                                             |
 | HighBP               | 0 = no high BP 1 = high BP                                                                                                                                                                                                                                                                                                              |
@@ -111,52 +110,70 @@ For my analysis, I will first look at the distributions of each variable to iden
 
 ## Exploratory/Descriptive analysis
 
-***\*To be added in later portion of project***
-
-*Use a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project.*
-
-@tbl-summarytable shows a summary of the data.
-
-Note the loading of the data providing a **relative** path using the `../../` notation. (Two dots means a folder up). You never want to specify an **absolute** path like `C:\ahandel\myproject\results\` because if you share this with someone, it won't work for them since they don't have that path. You can also use the `here` R package to create paths. See examples of that below. I generally recommend the `here` package.
+### Diabetes Distribution
 
 ```{r}
-#| label: tbl-summarytable
-#| tbl-cap: "Data summary table."
-#| echo: FALSE
-resulttable=readRDS("../../results/tables/summarytable.rds")
-knitr::kable(resulttable)
+knitr::include_graphics(here("results","figures","diabetes-distribution.png"))
 ```
+
+### BMI Distribution
+
+```{r}
+knitr::include_graphics(here("results","figures","BMI-distribution.png"))
+```
+
+### PhysHlth Distribution
+
+```{r}
+knitr::include_graphics(here("results","figures","PhysHlth-distribution.png"))
+```
+
+### Age Distribution
+
+```{r}
+knitr::include_graphics(here("results","figures","Age-distribution.png"))
+```
+
+### Smoker Distribution
+
+```{r}
+knitr::include_graphics(here("results","figures","smoker-distribution.png"))
+```
+
+### Correlation Matrix
+
+```{r}
+knitr::include_graphics(here("results","figures","correlation_matrix.png"))
+```
+
+### Feature Importance - Linear Regression
+
+\*Will fix and put into readable table
+
+```         
+            HighBP             HighChol            CholCheck                  BMI               Smoker               Stroke HeartDiseaseorAttack 
+            1.141777             1.070725             1.011236             1.124242             1.073702             1.071638             1.150480 
+        PhysActivity               Fruits              Veggies    HvyAlcoholConsump        AnyHealthcare          NoDocbcCost              GenHlth 
+            1.140832             1.109908             1.105040             1.013591             1.100212             1.157580             1.743109 
+            MentHlth             PhysHlth             DiffWalk                  Sex                  Age            Education               Income 
+            1.281663             1.697022             1.499052             1.109269             1.326329             1.299898             1.505502 
+```
+
+### Feature Importance - Random Forest
+
+```{r}
+knitr::include_graphics(here("results","figures","variable_importance.png"))
+```
+
+Overall, the variables do not show much correlation with one another, however I have a feeling that I may need to do more data processing, i.e. making categorical variables into factors and removing them from the correlation matrix. I decided to include some distributions of variables that I found to be interesting, such as BMI, Age, PhysHlth, and Smoker. After running both a linear and random forest model to determine the most important features, it looks as if BMI, HighBP, HeartDiseaseorAttack, and HvyAlchoholConsump are the most important features to include in the models.
 
 ## Basic statistical analysis
 
 ***\*To be added in later portion of project***
 
-*To get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any "p\<0.05 means statistical significance" interpretation is not valid.*
-
-@fig-result shows a scatterplot figure produced by one of the R scripts.
-
-```{r}
-#| label: fig-result
-#| fig-cap: "Height and weight stratified by gender."
-#| echo: FALSE
-knitr::include_graphics(here("results","figures","height-weight-stratified.png"))
-```
-
 ## Full analysis
 
 ***\*To be added in later portion of project***
-
-*Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.*
-
-Example @tbl-resulttable2 shows a summary of a linear model fit.
-
-```{r}
-#| label: tbl-resulttable2
-#| tbl-cap: "Linear model fit table."
-#| echo: FALSE
-resulttable2 = readRDS(here("results","tables","resulttable2.rds"))
-knitr::kable(resulttable2)
-```
 
 {{< pagebreak >}}
 
@@ -166,27 +183,13 @@ knitr::kable(resulttable2)
 
 ***\*To be added in later portion of project***
 
-*Summarize what you did, what you found and what it means.*
-
 ## Strengths and Limitations
 
 ***\*To be added in later portion of project***
 
-*Discuss what you perceive as strengths and limitations of your analysis.*
-
 ## Conclusions
 
 ***\*To be added in later portion of project***
-
-*What are the main take-home messages?*
-
-*Include citations in your Rmd file using bibtex, the list of references will automatically be placed at the end*
-
-This paper [@leek2015] discusses types of analyses.
-
-These papers [@mckay2020; @mckay2020a] are good examples of papers published using a fully reproducible setup similar to the one shown in this template.
-
-Note that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal [are available](https://www.zotero.org/styles). You also specify the location of your bibtex reference file in the YAML. You can call your reference file anything you like.
 
 {{< pagebreak >}}
 
