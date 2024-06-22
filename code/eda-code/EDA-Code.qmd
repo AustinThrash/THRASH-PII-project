@@ -31,6 +31,7 @@ library(corrplot)
 library(ggcorrplot) # corr plot
 library(reshape2) # heat map
 library(GGally) # Pais ggplot2
+library(gridExtra)
 ```
 
 # Reading in the Data
@@ -52,47 +53,43 @@ saveRDS(summary_df, file = summarytable_file)
 
 # Simple Exploration
 
-```{r}
-
-```
-
 # Plots of Response/Features
 
 ## Histogram
 
 ```{r}
-p1 <- mydata %>% ggplot(aes(x=Diabetes_012)) + geom_histogram() 
-plot(p1)
-figure_file = here("results", "figures","diabetes-distribution.png")
-ggsave(filename = figure_file, plot=p1) 
-```
+# Function to create histograms for each variable
+create_histograms <- function(data) {
+  plots <- list()
+  for (col_name in names(data)) {
+    if (is.numeric(data[[col_name]])) {
+      p <- ggplot(data, aes_string(x = col_name)) + 
+        geom_histogram(binwidth = 1, fill = "salmon", color = "black") +
+        labs(title = col_name) +
+        theme_minimal()
+    } else {
+      p <- ggplot(data, aes_string(x = col_name)) + 
+        geom_bar(fill = "salmon", color = "black") +
+        labs(title = col_name) +
+        theme_minimal()
+    }
+    plots[[col_name]] <- p
+  }
+  return(plots)
+}
 
-```{r}
-p2 <- mydata %>% ggplot(aes(x=Smoker)) + geom_histogram() 
-plot(p2)
-figure_file = here("results", "figures","smoker-distribution.png")
-ggsave(filename = figure_file, plot=p2) 
-```
+# Create histograms for all variables
+histograms <- create_histograms(mydata)
 
-```{r}
-p3 <- mydata %>% ggplot(aes(x=BMI)) + geom_histogram() 
-plot(p3)
-figure_file = here("results", "figures","BMI-distribution.png")
-ggsave(filename = figure_file, plot=p3) 
-```
+# Arrange the plots in a grid
+n <- length(histograms)
+nCol <- ceiling(sqrt(n))
+nRow <- ceiling(n / nCol)
+combined_plot <- marrangeGrob(grobs = histograms, nrow = nRow, ncol = nCol)
 
-```{r}
-p4 <- mydata %>% ggplot(aes(x=PhysHlth)) + geom_histogram() 
-plot(p4)
-figure_file = here("results", "figures","PhysHlth-distribution.png")
-ggsave(filename = figure_file, plot=p4) 
-```
-
-```{r}
-p5 <- mydata %>% ggplot(aes(x=Age)) + geom_histogram() 
-plot(p5)
-figure_file = here("results", "figures","Age-distribution.png")
-ggsave(filename = figure_file, plot=p5) 
+# Save the combined plot to a PNG file
+figure_file <- here("results", "figures", "variable-distributions.png")
+ggsave(filename = figure_file, plot = combined_plot, width = 20, height = 20)
 ```
 
 ## Correlation Matrix

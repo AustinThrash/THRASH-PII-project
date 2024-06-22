@@ -1,0 +1,274 @@
+---
+title: "Manuscript for a Data Analysis Project: Diabetes Diagnosis"
+subtitle: ""
+author: Austin Thrash
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+    highlight-style: github
+csl: ../../assets/apa.csl
+---
+
+## SETUP - Loading In Packages
+
+```{r}
+# Loading in necessary libraries
+library(ISLR2)
+library(MASS)
+library(boot)
+library(glmnet)
+library(ggplot2) 
+library(pls)
+library(leaps)
+library(gam)
+library(fastDummies)
+library(caret)
+library(nnet)
+library(MLmetrics)
+library(randomForest)
+```
+
+## SETUP - Loading In The Data
+
+```{r}
+# This chunk is used to load in the data and display its structure:
+# ------ OUTPUT: ------
+# 'data.frame':	253680 obs. of  22 variables:
+# $ Diabetes_012        : num  0 0 0 0 0 0 0 0 2 0 ...
+# $ HighBP              : num  1 0 1 1 1 1 1 1 1 0 ...
+# $ HighChol            : num  1 0 1 0 1 1 0 1 1 0 ...
+# $ CholCheck           : num  1 0 1 1 1 1 1 1 1 1 ...
+# $ BMI                 : num  40 25 28 27 24 25 30 25 30 24 ...
+# $ Smoker              : num  1 1 0 0 0 1 1 1 1 0 ...
+# $ Stroke              : num  0 0 0 0 0 0 0 0 0 0 ...
+# $ HeartDiseaseorAttack: num  0 0 0 0 0 0 0 0 1 0 ...
+# $ PhysActivity        : num  0 1 0 1 1 1 0 1 0 0 ...
+# $ Fruits              : num  0 0 1 1 1 1 0 0 1 0 ...
+# $ Veggies             : num  1 0 0 1 1 1 0 1 1 1 ...
+# $ HvyAlcoholConsump   : num  0 0 0 0 0 0 0 0 0 0 ...
+# $ AnyHealthcare       : num  1 0 1 1 1 1 1 1 1 1 ...
+# $ NoDocbcCost         : num  0 1 1 0 0 0 0 0 0 0 ...
+# $ GenHlth             : num  5 3 5 2 2 2 3 3 5 2 ...
+# $ MentHlth            : num  18 0 30 0 3 0 0 0 30 0 ...
+# $ PhysHlth            : num  15 0 30 0 0 2 14 0 30 0 ...
+# $ DiffWalk            : num  1 0 1 0 0 0 0 1 1 0 ...
+# $ Sex                 : num  0 0 0 0 0 1 0 0 0 1 ...
+# $ Age                 : num  9 7 9 11 11 10 9 11 9 8 ...
+# $ Education           : num  4 6 4 3 5 6 6 4 5 4 ...
+# $ Income              : num  3 1 8 6 4 8 7 4 1 3 ...
+
+# Loading in the data from the proper location
+data_location <- here::here("data","processed-data","processeddata.rds")
+
+# Using the readRDS() function to load the data into a variable
+diabetes <- readRDS(data_location)
+
+# Displaying the structure
+str(diabetes)
+```
+
+## SETUP - Processing Data
+
+Although we processed the data prior, I will perform some further processing to ensure the data works properly when used in the models. Here is the structure of the dataset, so variables will be modified accordingly.
+
+| Feature              | Description                                                                                                                                                                                                                                                                                                                             |
+|------------------|------------------------------------------------------|
+| ID                   | Patient ID                                                                                                                                                                                                                                                                                                                              |
+| Diabetes_binary      | 0 = no diabetes 1 = prediabetes or diabetes                                                                                                                                                                                                                                                                                             |
+| HighBP               | 0 = no high BP 1 = high BP                                                                                                                                                                                                                                                                                                              |
+| HighChol             | 0 = no high cholesterol 1 = high cholesterol                                                                                                                                                                                                                                                                                            |
+| CholCheck            | 0 = no cholesterol check in 5 years 1 = yes cholesterol check in 5 years                                                                                                                                                                                                                                                                |
+| BMI                  | Body Mass Index                                                                                                                                                                                                                                                                                                                         |
+| Smoker               | Have you smoked at least 100 cigarettes in your entire life? \[Note: 5 packs = 100 cigarettes\] 0 = no 1 = yes                                                                                                                                                                                                                          |
+| Stoke                | (Ever told) you had a stroke. 0 = no 1 = yes                                                                                                                                                                                                                                                                                            |
+| HeartDiseaseorAttack | coronary heart disease (CHD) or myocardial infarction (MI) 0 = no 1 = yes                                                                                                                                                                                                                                                               |
+| PhysActivity         | physical activity in past 30 days - not including job 0 = no 1 = yes                                                                                                                                                                                                                                                                    |
+| Fruits               | Consume Fruit 1 or more times per day 0 = no 1 = yes                                                                                                                                                                                                                                                                                    |
+| Veggies              | Consume Vegetables 1 or more times per day 0 = no 1 = yes                                                                                                                                                                                                                                                                               |
+| HvyAlchoholConsump   | Heavy drinkers (adult men having more than 14 drinks per week and adult women having more than 7 drinks per week) 0 = no 1 = yes                                                                                                                                                                                                        |
+| AnyHealthcare        | Have any kind of health care coverage, including health insurance, prepaid plans such as HMO, etc. 0 = no 1 = yes                                                                                                                                                                                                                       |
+| NoDocbcCost          | Was there a time in the past 12 months when you needed to see a doctor but could not because of cost? 0 = no 1 = yes                                                                                                                                                                                                                    |
+| GenHlth              | Would you say that in general your health is: scale 1-5 1 = excellent 2 = very good 3 = good 4 = fair 5 = poor                                                                                                                                                                                                                          |
+| MentHlth             | Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good? scale 1-30 days                                                                                                                                        |
+| PhysHlth             | Now thinking about your physical health, which includes physical illness and injury, for how many days during the past 30 days was your physical health not good? scale 1-30 days                                                                                                                                                       |
+| DiffWalk             | Do you have serious difficulty walking or climbing stairs? 0 = no 1 = yes                                                                                                                                                                                                                                                               |
+| Sex                  | 0 = female 1 = male                                                                                                                                                                                                                                                                                                                     |
+| Age                  | 13-level age category (\_AGEG5YR see codebook) 1 = 18-24 9 = 60-64 13 = 80 or older                                                                                                                                                                                                                                                     |
+| Education            | Education level (EDUCA see codebook) scale 1-6 1 = Never attended school or only kindergarten 2 = Grades 1 through 8 (Elementary) 3 = Grades 9 through 11 (Some high school) 4 = Grade 12 or GED (High school graduate) 5 = College 1 year to 3 years (Some college or technical school) 6 = College 4 years or more (College graduate) |
+| Income               | Income scale (INCOME2 see codebook) scale 1-8 1 = less than \$10,000 5 = less than \$35,000 8 = \$75,000 or more                                                                                                                                                                                                                        |
+
+```{r}
+# This chunk is used to further process the data
+
+# Copying data
+proc_data <- diabetes
+
+# Removing ID column
+proc_data$ID <- NULL
+
+# Target
+proc_data$Diabetes_012 <- as.factor(proc_data$Diabetes_012)
+levels(proc_data$Diabetes_012) <- make.names(levels(proc_data$Diabetes_012))
+
+# Features
+proc_data$HighBP <- as.factor(proc_data$HighBP)
+proc_data$HighChol <- as.factor(proc_data$HighChol)
+proc_data$CholCheck <- as.factor(proc_data$CholCheck)
+proc_data$Smoker <- as.factor(proc_data$Smoker)
+proc_data$Stroke <- as.factor(proc_data$Stroke)
+proc_data$HeartDiseaseorAttack <- as.factor(proc_data$HeartDiseaseorAttack)
+proc_data$PhysActivity <- as.factor(proc_data$PhysActivity)
+proc_data$Fruits <- as.factor(proc_data$Fruits)
+proc_data$Veggies <- as.factor(proc_data$Veggies)
+proc_data$HvyAlcoholConsump <- as.factor(proc_data$HvyAlcoholConsump)
+proc_data$AnyHealthcare <- as.factor(proc_data$AnyHealthcare)
+proc_data$NoDocbcCost <- as.factor(proc_data$NoDocbcCost)
+proc_data$GenHlth <- as.factor(proc_data$GenHlth)
+proc_data$MentHlth <- as.factor(proc_data$MentHlth)
+proc_data$PhysHlth <- as.factor(proc_data$PhysHlth)
+proc_data$DiffWalk <- as.factor(proc_data$DiffWalk)
+proc_data$Sex <- as.factor(proc_data$Sex)
+proc_data$Age <- as.factor(proc_data$Age)
+proc_data$Education <- as.factor(proc_data$Education)
+proc_data$Income <- as.factor(proc_data$Income)
+
+str(proc_data)
+```
+
+We can make note that a majority of our features are factors simply because most of the data recorded was on a scale, either binary (0-1), or a larger (1-8). Due to the data having so many categorical variables, we should opt to use models that more effectively handle categorical features. Therefore, we will start with a simple logistic regression, making use of one-hot encoding, then we will move on to models that may perform better such as random forest or KNN.
+
+# Statistical Analysis
+
+## Multinomial Logistic Regression
+
+### One-Hot Encoding
+
+```{r}
+# Getting random sample
+set.seed(123) # for reproducibility
+sample_size <- 25500
+sample_indices <- sample(1:nrow(proc_data), size = sample_size, replace = FALSE)
+sample_data <- proc_data[sample_indices, ]
+```
+
+```{r}
+# Perform one-hot encoding
+sample_data_encoded <- dummy_cols(sample_data, remove_first_dummy = TRUE)
+
+# Drop the original categorical columns
+categorical_columns <- c(
+  "HighBP", "HighChol", "CholCheck", "Smoker", "Stroke",
+  "HeartDiseaseorAttack", "PhysActivity", "Fruits", "Veggies", "HvyAlcoholConsump",
+  "AnyHealthcare", "NoDocbcCost", "GenHlth", "MentHlth", "PhysHlth", "DiffWalk",
+  "Sex", "Age", "Education", "Income", "Diabetes_012_1", "Diabetes_012_2"
+)
+
+# Select only the non-categorical columns and the one-hot encoded columns
+sample_data_encoded <- sample_data_encoded[, !names(sample_data_encoded) %in% categorical_columns]
+
+# Rename the factor levels to valid variable names
+levels(sample_data_encoded$Diabetes_012) <- make.names(levels(sample_data_encoded$Diabetes_012))
+
+
+# Inspect the new data frame
+str(sample_data_encoded)
+```
+
+### Training
+
+```{r}
+set.seed(12345)
+train_control <- trainControl(method = "cv", number = 5, 
+                              classProbs = TRUE, 
+                              summaryFunction = multiClassSummary)
+```
+
+```{r}
+set.seed(12345)
+logistic_model <- train(Diabetes_012 ~ ., 
+                        data = sample_data_encoded, 
+                        method = "multinom", 
+                        trControl = train_control,
+                        preProcess = c("center", "scale"),
+                        metric = "Accuracy")  # Optimization metric can be "Accuracy" or "Kappa"
+
+```
+
+### Results
+
+```{r}
+print(logistic_model)
+```
+
+```{r}
+# Make predictions on the same data (or a test dataset if you have one)
+predictions <- predict(logistic_model, newdata = sample_data_encoded)
+
+# Confusion matrix
+confusion_matrix <- confusionMatrix(predictions, sample_data_encoded$Diabetes_012)
+print(confusion_matrix)
+```
+
+## Random Forest
+
+### Sampling Data
+
+I may need to change how I am sampling the data so I can make sure the sample is balanced.
+
+```{r}
+# Getting random sample
+set.seed(123) # for reproducibility
+sample_size <- 25500
+sample_indices <- sample(1:nrow(proc_data), size = sample_size, replace = FALSE)
+sample_data <- proc_data[sample_indices, ]
+```
+
+### Training
+
+```{r}
+set.seed(12345)
+train_control <- trainControl(method = "cv", number = 2, 
+                              classProbs = TRUE, 
+                              summaryFunction = multiClassSummary)
+
+# Fit the random forest model using caret
+set.seed(12345)
+rf_model <- train(Diabetes_012 ~ ., 
+                  data = sample_data, 
+                  method = "rf", 
+                  trControl = train_control,
+                  preProcess = c("center", "scale"),
+                  metric = "Accuracy")  # Optimization metric can be "Accuracy" or "Kappa"
+```
+
+### Results
+
+```{r}
+print(rf_model)
+```
+
+```{r}
+# Make predictions on the same data (or a test dataset if you have one)
+predictions <- predict(rf_model, newdata = sample_data)
+
+# Confusion matrix
+confusion_matrix <- confusionMatrix(predictions, sample_data$Diabetes_012)
+print(confusion_matrix)
+```
+
+## KNN
+
+### Training
+
+```{r}
+
+```
+
+### Results
+
+```{r}
+
+```

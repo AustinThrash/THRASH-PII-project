@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Austin Thrash">
-<meta name="dcterms.date" content="2024-06-14">
+<meta name="dcterms.date" content="2024-06-21">
 
 <title>Manuscript for a Data Analysis Project: Diabetes Diagnosis</title>
 <style>
@@ -98,22 +98,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#what-relationspatterns-are-you-looking-for-in-the-data" id="toc-what-relationspatterns-are-you-looking-for-in-the-data" class="nav-link" data-scroll-target="#what-relationspatterns-are-you-looking-for-in-the-data"><span class="header-section-number">3.1.4</span> What relations/patterns are you looking for in the data?</a></li>
   </ul></li>
   <li><a href="#data-import-and-cleaning" id="toc-data-import-and-cleaning" class="nav-link" data-scroll-target="#data-import-and-cleaning"><span class="header-section-number">3.2</span> Data import and cleaning</a></li>
-  <li><a href="#statistical-analysis" id="toc-statistical-analysis" class="nav-link" data-scroll-target="#statistical-analysis"><span class="header-section-number">3.3</span> Statistical analysis</a></li>
+  <li><a href="#statistical-analysis-method" id="toc-statistical-analysis-method" class="nav-link" data-scroll-target="#statistical-analysis-method"><span class="header-section-number">3.3</span> Statistical analysis method</a></li>
   </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">4</span> Results</a>
   <ul class="collapse">
   <li><a href="#exploratorydescriptive-analysis" id="toc-exploratorydescriptive-analysis" class="nav-link" data-scroll-target="#exploratorydescriptive-analysis"><span class="header-section-number">4.1</span> Exploratory/Descriptive analysis</a>
   <ul class="collapse">
-  <li><a href="#diabetes-distribution" id="toc-diabetes-distribution" class="nav-link" data-scroll-target="#diabetes-distribution"><span class="header-section-number">4.1.1</span> Diabetes Distribution</a></li>
-  <li><a href="#bmi-distribution" id="toc-bmi-distribution" class="nav-link" data-scroll-target="#bmi-distribution"><span class="header-section-number">4.1.2</span> BMI Distribution</a></li>
-  <li><a href="#physhlth-distribution" id="toc-physhlth-distribution" class="nav-link" data-scroll-target="#physhlth-distribution"><span class="header-section-number">4.1.3</span> PhysHlth Distribution</a></li>
-  <li><a href="#age-distribution" id="toc-age-distribution" class="nav-link" data-scroll-target="#age-distribution"><span class="header-section-number">4.1.4</span> Age Distribution</a></li>
-  <li><a href="#smoker-distribution" id="toc-smoker-distribution" class="nav-link" data-scroll-target="#smoker-distribution"><span class="header-section-number">4.1.5</span> Smoker Distribution</a></li>
-  <li><a href="#correlation-matrix" id="toc-correlation-matrix" class="nav-link" data-scroll-target="#correlation-matrix"><span class="header-section-number">4.1.6</span> Correlation Matrix</a></li>
-  <li><a href="#feature-importance---linear-regression" id="toc-feature-importance---linear-regression" class="nav-link" data-scroll-target="#feature-importance---linear-regression"><span class="header-section-number">4.1.7</span> Feature Importance - Linear Regression</a></li>
-  <li><a href="#feature-importance---random-forest" id="toc-feature-importance---random-forest" class="nav-link" data-scroll-target="#feature-importance---random-forest"><span class="header-section-number">4.1.8</span> Feature Importance - Random Forest</a></li>
+  <li><a href="#distribution-of-all-variables" id="toc-distribution-of-all-variables" class="nav-link" data-scroll-target="#distribution-of-all-variables"><span class="header-section-number">4.1.1</span> Distribution of all variables</a></li>
+  <li><a href="#correlation-matrix" id="toc-correlation-matrix" class="nav-link" data-scroll-target="#correlation-matrix"><span class="header-section-number">4.1.2</span> Correlation Matrix</a></li>
+  <li><a href="#feature-importance---linear-regression" id="toc-feature-importance---linear-regression" class="nav-link" data-scroll-target="#feature-importance---linear-regression"><span class="header-section-number">4.1.3</span> Feature Importance - Linear Regression</a></li>
+  <li><a href="#feature-importance---random-forest" id="toc-feature-importance---random-forest" class="nav-link" data-scroll-target="#feature-importance---random-forest"><span class="header-section-number">4.1.4</span> Feature Importance - Random Forest</a></li>
   </ul></li>
-  <li><a href="#basic-statistical-analysis" id="toc-basic-statistical-analysis" class="nav-link" data-scroll-target="#basic-statistical-analysis"><span class="header-section-number">4.2</span> Basic statistical analysis</a></li>
+  <li><a href="#basic-statistical-analysis" id="toc-basic-statistical-analysis" class="nav-link" data-scroll-target="#basic-statistical-analysis"><span class="header-section-number">4.2</span> Basic statistical analysis</a>
+  <ul class="collapse">
+  <li><a href="#methods-1" id="toc-methods-1" class="nav-link" data-scroll-target="#methods-1"><span class="header-section-number">4.2.1</span> Methods</a></li>
+  <li><a href="#preparing-the-data" id="toc-preparing-the-data" class="nav-link" data-scroll-target="#preparing-the-data"><span class="header-section-number">4.2.2</span> Preparing the data</a></li>
+  <li><a href="#results-1" id="toc-results-1" class="nav-link" data-scroll-target="#results-1"><span class="header-section-number">4.2.3</span> Results</a></li>
+  </ul></li>
   <li><a href="#full-analysis" id="toc-full-analysis" class="nav-link" data-scroll-target="#full-analysis"><span class="header-section-number">4.3</span> Full analysis</a></li>
   </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion"><span class="header-section-number">5</span> Discussion</a>
@@ -149,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 14, 2024</p>
+      <p class="date">June 21, 2024</p>
     </div>
   </div>
   
@@ -175,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions</p>
 <table class="table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 83%">
+<col style="width: 25%">
+<col style="width: 75%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -314,12 +315,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="data-import-and-cleaning" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="data-import-and-cleaning"><span class="header-section-number">3.2</span> Data import and cleaning</h2>
-<p><em>*To be added in later portion of project</em></p>
+<p>Not much occurs during the cleaning stage as the dataset was processed and cleaned prior. The only modifications made to the dataset was removing the ‘ID’ column as it is not useful for this analysis. Once the data was imported, it was only a matter of converting categorical variables to factors so they would function properly. One-hot encoding was implemented, but only for the multinomial logistic regression.</p>
 </section>
-<section id="statistical-analysis" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="statistical-analysis"><span class="header-section-number">3.3</span> Statistical analysis</h2>
-<p>For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDCs website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will then split the data set into a training and test set using a 80/20 split and begin the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.</p>
-<p><strong><em>* Any section past results has not been modified yet. I only completed the sections required for the first part.</em></strong></p>
+<section id="statistical-analysis-method" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="statistical-analysis-method"><span class="header-section-number">3.3</span> Statistical analysis method</h2>
+<p>For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDCs website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will utilize cross validation during the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -327,62 +327,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 data-number="4"><span class="header-section-number">4</span> Results</h1>
 <section id="exploratorydescriptive-analysis" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="exploratorydescriptive-analysis"><span class="header-section-number">4.1</span> Exploratory/Descriptive analysis</h2>
-<section id="diabetes-distribution" class="level3" data-number="4.1.1">
-<h3 data-number="4.1.1" class="anchored" data-anchor-id="diabetes-distribution"><span class="header-section-number">4.1.1</span> Diabetes Distribution</h3>
+<section id="distribution-of-all-variables" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="distribution-of-all-variables"><span class="header-section-number">4.1.1</span> Distribution of all variables</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"diabetes-distribution.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"variable-distributions.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="../../results/figures/diabetes-distribution.png" class="img-fluid" width="1059"></p>
+<p><img src="../../results/figures/variable-distributions.png" class="img-fluid" width="3000"></p>
 </div>
 </div>
 </section>
-<section id="bmi-distribution" class="level3" data-number="4.1.2">
-<h3 data-number="4.1.2" class="anchored" data-anchor-id="bmi-distribution"><span class="header-section-number">4.1.2</span> BMI Distribution</h3>
+<section id="correlation-matrix" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="correlation-matrix"><span class="header-section-number">4.1.2</span> Correlation Matrix</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"BMI-distribution.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="../../results/figures/BMI-distribution.png" class="img-fluid" width="1059"></p>
-</div>
-</div>
-</section>
-<section id="physhlth-distribution" class="level3" data-number="4.1.3">
-<h3 data-number="4.1.3" class="anchored" data-anchor-id="physhlth-distribution"><span class="header-section-number">4.1.3</span> PhysHlth Distribution</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"PhysHlth-distribution.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="../../results/figures/PhysHlth-distribution.png" class="img-fluid" width="1059"></p>
-</div>
-</div>
-</section>
-<section id="age-distribution" class="level3" data-number="4.1.4">
-<h3 data-number="4.1.4" class="anchored" data-anchor-id="age-distribution"><span class="header-section-number">4.1.4</span> Age Distribution</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"Age-distribution.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="../../results/figures/Age-distribution.png" class="img-fluid" width="1059"></p>
-</div>
-</div>
-</section>
-<section id="smoker-distribution" class="level3" data-number="4.1.5">
-<h3 data-number="4.1.5" class="anchored" data-anchor-id="smoker-distribution"><span class="header-section-number">4.1.5</span> Smoker Distribution</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"smoker-distribution.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="../../results/figures/smoker-distribution.png" class="img-fluid" width="1059"></p>
-</div>
-</div>
-</section>
-<section id="correlation-matrix" class="level3" data-number="4.1.6">
-<h3 data-number="4.1.6" class="anchored" data-anchor-id="correlation-matrix"><span class="header-section-number">4.1.6</span> Correlation Matrix</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"correlation_matrix.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"correlation_matrix.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="../../results/figures/correlation_matrix.png" class="img-fluid" width="400"></p>
 </div>
 </div>
 </section>
-<section id="feature-importance---linear-regression" class="level3" data-number="4.1.7">
-<h3 data-number="4.1.7" class="anchored" data-anchor-id="feature-importance---linear-regression"><span class="header-section-number">4.1.7</span> Feature Importance - Linear Regression</h3>
+<section id="feature-importance---linear-regression" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="feature-importance---linear-regression"><span class="header-section-number">4.1.3</span> Feature Importance - Linear Regression</h3>
 <p>*Will fix and put into readable table</p>
 <pre><code>            HighBP             HighChol            CholCheck                  BMI               Smoker               Stroke HeartDiseaseorAttack 
             1.141777             1.070725             1.011236             1.124242             1.073702             1.071638             1.150480 
@@ -391,10 +355,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             MentHlth             PhysHlth             DiffWalk                  Sex                  Age            Education               Income 
             1.281663             1.697022             1.499052             1.109269             1.326329             1.299898             1.505502 </code></pre>
 </section>
-<section id="feature-importance---random-forest" class="level3" data-number="4.1.8">
-<h3 data-number="4.1.8" class="anchored" data-anchor-id="feature-importance---random-forest"><span class="header-section-number">4.1.8</span> Feature Importance - Random Forest</h3>
+<section id="feature-importance---random-forest" class="level3" data-number="4.1.4">
+<h3 data-number="4.1.4" class="anchored" data-anchor-id="feature-importance---random-forest"><span class="header-section-number">4.1.4</span> Feature Importance - Random Forest</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"variable_importance.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"variable_importance.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="../../results/figures/variable_importance.png" class="img-fluid" width="500"></p>
 </div>
@@ -404,11 +368,104 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="basic-statistical-analysis" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="basic-statistical-analysis"><span class="header-section-number">4.2</span> Basic statistical analysis</h2>
-<p><strong><em>*To be added in later portion of project</em></strong></p>
+<p><strong><em>*IN PROGRESS</em></strong></p>
+<section id="methods-1" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="methods-1"><span class="header-section-number">4.2.1</span> Methods</h3>
+<p>After processing and exploring the data, it was discovered that a majority of the features in this dataset are categorical. Therefore, we will be making use of models that are more rigorous to our situation, such as random forest and KNN. However before trying those models, we will first do a simple multinomial logistic regression. Why multinomial? That is because our response variable is not binary, it has three levels to it; typically, logistic regression is used for binary classification. After creating models with all features included, we will go on to look at models with features that fit our importance criteria (i.e.&nbsp;look at the models results when using the most important features).</p>
+</section>
+<section id="preparing-the-data" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="preparing-the-data"><span class="header-section-number">4.2.2</span> Preparing the data</h3>
+<p>For some of the models, mainly multinomial logistic regression, we need to further process our data. The method we will use is known as one-hot encoding. One-hot encoding is a process of converting categorical variables into a binary (0 or 1) format where each category becomes a new binary column. We need to do this because most machine learning algorithms require numerical input and cannot handle categorical data directly, so formatting this data in a different manner will provide us with better results.</p>
+</section>
+<section id="results-1" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="results-1"><span class="header-section-number">4.2.3</span> Results</h3>
+<section id="multinomial-logistic-regression---all-features" class="level4" data-number="4.2.3.1">
+<h4 data-number="4.2.3.1" class="anchored" data-anchor-id="multinomial-logistic-regression---all-features"><span class="header-section-number">4.2.3.1</span> Multinomial Logistic Regression - All Features</h4>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    X0    X1    X2
+        X0 21075   398  2891
+        X1     3     1     1
+        X2   477    32   622
+
+Overall Statistics
+                                          
+               Accuracy : 0.8509          
+                 95% CI : (0.8465, 0.8553)
+    No Information Rate : 0.8453          
+    P-Value [Acc &gt; NIR] : 0.006606        
+                                          
+                  Kappa : 0.1995          
+                                          
+ Mcnemar's Test P-Value : &lt; 2.2e-16       
+
+Statistics by Class:
+
+                     Class: X0 Class: X1 Class: X2
+Sensitivity             0.9777 2.320e-03   0.17701
+Specificity             0.1663 9.998e-01   0.97685
+Pos Pred Value          0.8650 2.000e-01   0.54996
+Neg Pred Value          0.5775 9.831e-01   0.88132
+Prevalence              0.8453 1.690e-02   0.13780
+Detection Rate          0.8265 3.922e-05   0.02439
+Detection Prevalence    0.9555 1.961e-04   0.04435
+Balanced Accuracy       0.5720 5.011e-01   0.57693</code></pre>
+<p>- Notes (Will be expanded and explained in future update):</p>
+<ul>
+<li><p>Accuracy: 85.09%</p></li>
+<li><p>Target variable may not be balanced</p></li>
+</ul>
+</section>
+<section id="random-forest---all-features" class="level4" data-number="4.2.3.2">
+<h4 data-number="4.2.3.2" class="anchored" data-anchor-id="random-forest---all-features"><span class="header-section-number">4.2.3.2</span> Random Forest - All Features</h4>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    X0    X1    X2
+        X0 21555   431  3514
+        X1     0     0     0
+        X2     0     0     0
+
+Overall Statistics
+                                          
+               Accuracy : 0.8453          
+                 95% CI : (0.8408, 0.8497)
+    No Information Rate : 0.8453          
+    P-Value [Acc &gt; NIR] : 0.5042          
+                                          
+                  Kappa : 0               
+                                          
+ Mcnemar's Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: X0 Class: X1 Class: X2
+Sensitivity             1.0000    0.0000    0.0000
+Specificity             0.0000    1.0000    1.0000
+Pos Pred Value          0.8453       NaN       NaN
+Neg Pred Value             NaN    0.9831    0.8622
+Prevalence              0.8453    0.0169    0.1378
+Detection Rate          0.8453    0.0000    0.0000
+Detection Prevalence    1.0000    0.0000    0.0000
+Balanced Accuracy       0.5000    0.5000    0.5000</code></pre>
+<p>- Notes (Will be expanded and explained in future update):</p>
+<ul>
+<li><p>Model is only predicting ‘0’, likely an error in model setup</p></li>
+<li><p>Due to inaccurate predictions, accuracy is not applicable.</p></li>
+</ul>
+</section>
+<section id="knn---all-features" class="level4" data-number="4.2.3.3">
+<h4 data-number="4.2.3.3" class="anchored" data-anchor-id="knn---all-features"><span class="header-section-number">4.2.3.3</span> KNN - All Features</h4>
+<ul>
+<li>in progress</li>
+</ul>
+</section>
+</section>
 </section>
 <section id="full-analysis" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="full-analysis"><span class="header-section-number">4.3</span> Full analysis</h2>
-<p><strong><em>*To be added in later portion of project</em></strong></p>
+<p><strong><em>*To be updated in later portion of project</em></strong></p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -416,21 +473,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 data-number="5"><span class="header-section-number">5</span> Discussion</h1>
 <section id="summary-and-interpretation" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="summary-and-interpretation"><span class="header-section-number">5.1</span> Summary and Interpretation</h2>
-<p><strong><em>*To be added in later portion of project</em></strong></p>
+<p><strong><em>*To be updated in later portion of project</em></strong></p>
 </section>
 <section id="strengths-and-limitations" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="strengths-and-limitations"><span class="header-section-number">5.2</span> Strengths and Limitations</h2>
-<p><strong><em>*To be added in later portion of project</em></strong></p>
+<p><strong><em>*To be updated in later portion of project</em></strong></p>
+<ul>
+<li><p>LIMIT: Having a lot of categorical features</p></li>
+<li><p>LIMIT: Having a response variable with 3 levels instead of a binary.</p></li>
+</ul>
 </section>
 <section id="conclusions" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">5.3</span> Conclusions</h2>
-<p><strong><em>*To be added in later portion of project</em></strong></p>
+<p><strong><em>*To be updated in later portion of project</em></strong></p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="references" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> References</h1>
-<p><strong><em>*To be added in later portion of project</em></strong></p>
+<p><strong><em>*To be updated in later portion of project</em></strong></p>
 </section>
 
 </main>

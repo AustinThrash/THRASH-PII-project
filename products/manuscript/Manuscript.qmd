@@ -35,7 +35,7 @@ library(knitr)
 This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions
 
 | Feature              | Description                                                                                                                                                                                                                                                                                                                             |
-|------------|------------------------------------------------------------|
+|------------------|------------------------------------------------------|
 | ID                   | Patient ID                                                                                                                                                                                                                                                                                                                              |
 | Diabetes_binary      | 0 = no diabetes 1 = prediabetes or diabetes                                                                                                                                                                                                                                                                                             |
 | HighBP               | 0 = no high BP 1 = high BP                                                                                                                                                                                                                                                                                                              |
@@ -96,13 +96,11 @@ I will look for patterns ad relationships between the predictors and the outcome
 
 ## Data import and cleaning
 
-*\*To be added in later portion of project*
+Not much occurs during the cleaning stage as the dataset was processed and cleaned prior. The only modifications made to the dataset was removing the 'ID' column as it is not useful for this analysis. Once the data was imported, it was only a matter of converting categorical variables to factors so they would function properly. One-hot encoding was implemented, but only for the multinomial logistic regression.
 
-## Statistical analysis
+## Statistical analysis method
 
-For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDCs website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will then split the data set into a training and test set using a 80/20 split and begin the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.
-
-***\* Any section past results has not been modified yet. I only completed the sections required for the first part.***
+For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDCs website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will utilize cross validation during the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.
 
 {{< pagebreak >}}
 
@@ -110,34 +108,10 @@ For my analysis, I will first look at the distributions of each variable to iden
 
 ## Exploratory/Descriptive analysis
 
-### Diabetes Distribution
+### Distribution of all variables
 
 ```{r}
-knitr::include_graphics(here("results","figures","diabetes-distribution.png"))
-```
-
-### BMI Distribution
-
-```{r}
-knitr::include_graphics(here("results","figures","BMI-distribution.png"))
-```
-
-### PhysHlth Distribution
-
-```{r}
-knitr::include_graphics(here("results","figures","PhysHlth-distribution.png"))
-```
-
-### Age Distribution
-
-```{r}
-knitr::include_graphics(here("results","figures","Age-distribution.png"))
-```
-
-### Smoker Distribution
-
-```{r}
-knitr::include_graphics(here("results","figures","smoker-distribution.png"))
+knitr::include_graphics(here("results","figures","variable-distributions.png"))
 ```
 
 ### Correlation Matrix
@@ -169,11 +143,107 @@ Overall, the variables do not show much correlation with one another, however I 
 
 ## Basic statistical analysis
 
-***\*To be added in later portion of project***
+***\*IN PROGRESS***
+
+### Methods
+
+After processing and exploring the data, it was discovered that a majority of the features in this dataset are categorical. Therefore, we will be making use of models that are more rigorous to our situation, such as random forest and KNN. However before trying those models, we will first do a simple multinomial logistic regression. Why multinomial? That is because our response variable is not binary, it has three levels to it; typically, logistic regression is used for binary classification. After creating models with all features included, we will go on to look at models with features that fit our importance criteria (i.e. look at the models results when using the most important features).
+
+### Preparing the data
+
+For some of the models, mainly multinomial logistic regression, we need to further process our data. The method we will use is known as one-hot encoding. One-hot encoding is a process of converting categorical variables into a binary (0 or 1) format where each category becomes a new binary column. We need to do this because most machine learning algorithms require numerical input and cannot handle categorical data directly, so formatting this data in a different manner will provide us with better results.
+
+### Results
+
+#### Multinomial Logistic Regression - All Features
+
+```         
+Confusion Matrix and Statistics
+
+          Reference
+Prediction    X0    X1    X2
+        X0 21075   398  2891
+        X1     3     1     1
+        X2   477    32   622
+
+Overall Statistics
+                                          
+               Accuracy : 0.8509          
+                 95% CI : (0.8465, 0.8553)
+    No Information Rate : 0.8453          
+    P-Value [Acc > NIR] : 0.006606        
+                                          
+                  Kappa : 0.1995          
+                                          
+ Mcnemar's Test P-Value : < 2.2e-16       
+
+Statistics by Class:
+
+                     Class: X0 Class: X1 Class: X2
+Sensitivity             0.9777 2.320e-03   0.17701
+Specificity             0.1663 9.998e-01   0.97685
+Pos Pred Value          0.8650 2.000e-01   0.54996
+Neg Pred Value          0.5775 9.831e-01   0.88132
+Prevalence              0.8453 1.690e-02   0.13780
+Detection Rate          0.8265 3.922e-05   0.02439
+Detection Prevalence    0.9555 1.961e-04   0.04435
+Balanced Accuracy       0.5720 5.011e-01   0.57693
+```
+
+\- Notes (Will be expanded and explained in future update):
+
+-   Accuracy: 85.09%
+
+-   Target variable may not be balanced
+
+#### Random Forest - All Features
+
+```         
+Confusion Matrix and Statistics
+
+          Reference
+Prediction    X0    X1    X2
+        X0 21555   431  3514
+        X1     0     0     0
+        X2     0     0     0
+
+Overall Statistics
+                                          
+               Accuracy : 0.8453          
+                 95% CI : (0.8408, 0.8497)
+    No Information Rate : 0.8453          
+    P-Value [Acc > NIR] : 0.5042          
+                                          
+                  Kappa : 0               
+                                          
+ Mcnemar's Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: X0 Class: X1 Class: X2
+Sensitivity             1.0000    0.0000    0.0000
+Specificity             0.0000    1.0000    1.0000
+Pos Pred Value          0.8453       NaN       NaN
+Neg Pred Value             NaN    0.9831    0.8622
+Prevalence              0.8453    0.0169    0.1378
+Detection Rate          0.8453    0.0000    0.0000
+Detection Prevalence    1.0000    0.0000    0.0000
+Balanced Accuracy       0.5000    0.5000    0.5000
+```
+
+\- Notes (Will be expanded and explained in future update):
+
+-   Model is only predicting '0', likely an error in model setup
+
+-   Due to inaccurate predictions, accuracy is not applicable.
+
+#### KNN - All Features
+
+-   in progress
 
 ## Full analysis
 
-***\*To be added in later portion of project***
+***\*To be updated in later portion of project***
 
 {{< pagebreak >}}
 
@@ -181,18 +251,22 @@ Overall, the variables do not show much correlation with one another, however I 
 
 ## Summary and Interpretation
 
-***\*To be added in later portion of project***
+***\*To be updated in later portion of project***
 
 ## Strengths and Limitations
 
-***\*To be added in later portion of project***
+***\*To be updated in later portion of project***
+
+-   LIMIT: Having a lot of categorical features
+
+-   LIMIT: Having a response variable with 3 levels instead of a binary.
 
 ## Conclusions
 
-***\*To be added in later portion of project***
+***\*To be updated in later portion of project***
 
 {{< pagebreak >}}
 
 # References
 
-***\*To be added in later portion of project***
+***\*To be updated in later portion of project***
