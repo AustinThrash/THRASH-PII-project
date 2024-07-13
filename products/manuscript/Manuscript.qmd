@@ -35,7 +35,7 @@ library(knitr)
 This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions
 
 | Feature              | Description                                                                                                                                                                                                                                                                                                                             |
-|------------------|------------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | ID                   | Patient ID                                                                                                                                                                                                                                                                                                                              |
 | Diabetes_binary      | 0 = no diabetes 1 = prediabetes or diabetes                                                                                                                                                                                                                                                                                             |
 | HighBP               | 0 = no high BP 1 = high BP                                                                                                                                                                                                                                                                                                              |
@@ -70,7 +70,7 @@ This dataset comes from UC Irvine Machine Learning Repository. This data has bee
 
 # Methods
 
-*\*Analysis methods will be included in later part of project*
+The main question I would like to answer with this project is "What are the key health indicators that predict the likelihood of an individual being diagnosed with diabetes?".
 
 ```{r}
 library(readr)
@@ -78,11 +78,9 @@ library(readr)
 
 ## Data acquisition
 
-### Explain the question to be answered using the data
+This data comes from CDC and will be sampled during analysis.
 
-The main question I would like to answer with this project is "What are the key health indicators that predict the likelihood of an individual being diagnosed with diabetes?".
-
-### What will be your outcome(s) of interest (if any)?
+### Outcome of Interest
 
 The primary outcome of interest will be whether an individual has been diagnosed with diabetes or not. This outcome will be represented as a binary variable where 1 indicates a diabetes diagnosis and 0 indicates no diabetes.
 
@@ -100,7 +98,19 @@ Not much occurs during the cleaning stage as the dataset was processed and clean
 
 ## Statistical analysis method
 
-For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDCs website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will utilize cross validation during the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.
+For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDC's website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will utilize cross validation during the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.
+
+#### Logistic Regression
+
+Logistic regression will be used to model the relationship between the binary outcome variable and the predictors. This method will help in understanding the influence of each predictor on the likelihood of diabetes diagnosis.
+
+#### Random Forest
+
+Random forest, an ensemble learning method, will be used to improve the accuracy and robustness of predictions. It will help in identifying the importance of each predictor in determining the diabetes diagnosis.
+
+#### K-Nearest Neighbors (KNN)
+
+KNN will be used as a non-parametric method to classify individuals based on the closest training examples in the feature space. This will provide insights into the influence of neighborhood-based predictions on diabetes diagnosis.
 
 {{< pagebreak >}}
 
@@ -190,7 +200,7 @@ Detection Prevalence    0.9555 1.961e-04   0.04435
 Balanced Accuracy       0.5720 5.011e-01   0.57693
 ```
 
-\- Notes (Will be expanded and explained in future update):
+\- Notes (Will be expanded and explained in next update):
 
 -   Accuracy: 85.09%
 
@@ -231,7 +241,7 @@ Detection Prevalence    1.0000    0.0000    0.0000
 Balanced Accuracy       0.5000    0.5000    0.5000
 ```
 
-\- Notes (Will be expanded and explained in future update):
+\- Notes (Will be expanded and explained in next update):
 
 -   Model is only predicting '0', likely an error in model setup
 
@@ -240,6 +250,12 @@ Balanced Accuracy       0.5000    0.5000    0.5000
 #### KNN - All Features
 
 -   in progress
+
+#### Model Comparisons
+
+```{r}
+knitr::include_graphics(here("results","figures","model_accuracy_comparison.png"))
+```
 
 ## Full analysis
 

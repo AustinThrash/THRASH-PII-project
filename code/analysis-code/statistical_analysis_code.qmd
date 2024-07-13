@@ -29,6 +29,7 @@ library(caret)
 library(nnet)
 library(MLmetrics)
 library(randomForest)
+library(here) #to set paths
 ```
 
 ## SETUP - Loading In The Data
@@ -75,7 +76,7 @@ str(diabetes)
 Although we processed the data prior, I will perform some further processing to ensure the data works properly when used in the models. Here is the structure of the dataset, so variables will be modified accordingly.
 
 | Feature              | Description                                                                                                                                                                                                                                                                                                                             |
-|------------------|------------------------------------------------------|
+|------------|------------------------------------------------------------|
 | ID                   | Patient ID                                                                                                                                                                                                                                                                                                                              |
 | Diabetes_binary      | 0 = no diabetes 1 = prediabetes or diabetes                                                                                                                                                                                                                                                                                             |
 | HighBP               | 0 = no high BP 1 = high BP                                                                                                                                                                                                                                                                                                              |
@@ -264,11 +265,48 @@ print(confusion_matrix)
 ### Training
 
 ```{r}
-
+set.seed(12345)
+knn_model <- train(Diabetes_012 ~ ., 
+                   data = sample_data, 
+                   method = "knn", 
+                   trControl = train_control,
+                   preProcess = c("center", "scale"),
+                   metric = "Accuracy") 
 ```
 
 ### Results
 
 ```{r}
+# Make predictions on the same data (or a test dataset if you have one)
+predictions <- predict(knn_model, newdata = sample_data)
 
+# Confusion matrix
+confusion_matrix <- confusionMatrix(predictions, sample_data$Diabetes_012)
+print(confusion_matrix)
+```
+
+Plot of accuracy
+
+```{r}
+accuracy <- data.frame(
+  Model = c("Logistic Regression", "Random Forest", "KNN"),
+  Accuracy = c(
+    max(logistic_model$results$Accuracy),
+    max(rf_model$results$Accuracy),
+    max(knn_model$results$Accuracy)
+  )
+)
+
+accuracy_plot <- ggplot(accuracy, aes(x = Model, y = Accuracy, fill = Model)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Model Accuracy Comparison", y = "Accuracy", x = "Model") +
+  scale_fill_brewer(palette = "Set2")
+```
+
+```{r}
+# Define the file path to save the plot
+figure_file <- here("results", "figures")
+
+ggsave(filename = "model_accuracy_comparison.png", plot = accuracy_plot, path = figure_file)
 ```
