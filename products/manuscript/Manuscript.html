@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Austin Thrash">
-<meta name="dcterms.date" content="2024-06-21">
+<meta name="dcterms.date" content="2024-07-26">
 
 <title>Manuscript for a Data Analysis Project: Diabetes Diagnosis</title>
 <style>
@@ -56,7 +56,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="Manuscript_files/libs/clipboard/clipboard.min.js"></script>
@@ -92,10 +111,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#data-acquisition" id="toc-data-acquisition" class="nav-link" data-scroll-target="#data-acquisition"><span class="header-section-number">3.1</span> Data acquisition</a>
   <ul class="collapse">
-  <li><a href="#explain-the-question-to-be-answered-using-the-data" id="toc-explain-the-question-to-be-answered-using-the-data" class="nav-link" data-scroll-target="#explain-the-question-to-be-answered-using-the-data"><span class="header-section-number">3.1.1</span> Explain the question to be answered using the data</a></li>
-  <li><a href="#what-will-be-your-outcomes-of-interest-if-any" id="toc-what-will-be-your-outcomes-of-interest-if-any" class="nav-link" data-scroll-target="#what-will-be-your-outcomes-of-interest-if-any"><span class="header-section-number">3.1.2</span> What will be your outcome(s) of interest (if any)?</a></li>
-  <li><a href="#what-if-any-specific-predictors-will-you-focus-on" id="toc-what-if-any-specific-predictors-will-you-focus-on" class="nav-link" data-scroll-target="#what-if-any-specific-predictors-will-you-focus-on"><span class="header-section-number">3.1.3</span> What (if any) specific predictors will you focus on?</a></li>
-  <li><a href="#what-relationspatterns-are-you-looking-for-in-the-data" id="toc-what-relationspatterns-are-you-looking-for-in-the-data" class="nav-link" data-scroll-target="#what-relationspatterns-are-you-looking-for-in-the-data"><span class="header-section-number">3.1.4</span> What relations/patterns are you looking for in the data?</a></li>
+  <li><a href="#outcome-of-interest" id="toc-outcome-of-interest" class="nav-link" data-scroll-target="#outcome-of-interest"><span class="header-section-number">3.1.1</span> Outcome of Interest</a></li>
+  <li><a href="#what-if-any-specific-predictors-will-you-focus-on" id="toc-what-if-any-specific-predictors-will-you-focus-on" class="nav-link" data-scroll-target="#what-if-any-specific-predictors-will-you-focus-on"><span class="header-section-number">3.1.2</span> What (if any) specific predictors will you focus on?</a></li>
+  <li><a href="#what-relationspatterns-are-you-looking-for-in-the-data" id="toc-what-relationspatterns-are-you-looking-for-in-the-data" class="nav-link" data-scroll-target="#what-relationspatterns-are-you-looking-for-in-the-data"><span class="header-section-number">3.1.3</span> What relations/patterns are you looking for in the data?</a></li>
   </ul></li>
   <li><a href="#data-import-and-cleaning" id="toc-data-import-and-cleaning" class="nav-link" data-scroll-target="#data-import-and-cleaning"><span class="header-section-number">3.2</span> Data import and cleaning</a></li>
   <li><a href="#statistical-analysis-method" id="toc-statistical-analysis-method" class="nav-link" data-scroll-target="#statistical-analysis-method"><span class="header-section-number">3.3</span> Statistical analysis method</a></li>
@@ -115,7 +133,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#preparing-the-data" id="toc-preparing-the-data" class="nav-link" data-scroll-target="#preparing-the-data"><span class="header-section-number">4.2.2</span> Preparing the data</a></li>
   <li><a href="#results-1" id="toc-results-1" class="nav-link" data-scroll-target="#results-1"><span class="header-section-number">4.2.3</span> Results</a></li>
   </ul></li>
-  <li><a href="#full-analysis" id="toc-full-analysis" class="nav-link" data-scroll-target="#full-analysis"><span class="header-section-number">4.3</span> Full analysis</a></li>
   </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion"><span class="header-section-number">5</span> Discussion</a>
   <ul class="collapse">
@@ -150,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 21, 2024</p>
+      <p class="date">July 26, 2024</p>
     </div>
   </div>
   
@@ -162,22 +179,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="summaryabstract" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Summary/Abstract</h1>
-<p><em>*Summary will be finalized in later part of project and will include setup and results</em></p>
+<p>Diabetes is a chronic condition that affects millions of people worldwide, characterized by high blood glucose levels and serious complications if not managed properly. This study aims to identify key health indicators predicting the likelihood of an individual being diagnosed with diabetes using a dataset from the UC Irvine Machine Learning Repository, containing over 250,000 instances and 21 features. Three models were utilized: logistic regression, random forest, and K-nearest neighbors (KNN). The analysis revealed that BMI, high blood pressure, heart disease or attack history, and heavy alcohol consumption were significant predictors of diabetes. Logistic regression and KNN models demonstrated reasonable accuracy, while the random forest model required refinement. The study highlights the importance of these health indicators and suggests further data processing and model tuning for improved predictive performance.</p>
 <div style="page-break-after: always;"></div>
 </section>
 <section id="introduction" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Introduction</h1>
 <section id="general-background-information" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="general-background-information"><span class="header-section-number">2.1</span> General Background Information</h2>
-<p><em>*more background information will be added later, I will describe what diabetes is, what are the notable influences on diagnosis, and what the dataset provides in relation to other studies on diabetes diagnosis.</em></p>
+<p>“Diabetes can lead to severe, and in some cases, life-threatening complications.” <span class="citation" data-cites="ADA">(<a href="#ref-ADA" role="doc-biblioref"><em>Warning symptoms</em>, 2024</a>)</span>. Diabetes is a major cause of blindness, kidney failure, heart attacks, stroke, and lower limb amputation. Managing diabetes and its complications places a significant burden on healthcare systems worldwide. Early diagnosis and management are crucial to prevent adverse health outcomes. Several studies have identified various risk factors associated with diabetes, including age, BMI, physical activity, and dietary habits.</p>
 </section>
 <section id="description-of-data-and-data-source" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="description-of-data-and-data-source"><span class="header-section-number">2.2</span> Description of data and data source</h2>
 <p>This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions</p>
 <table class="table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 75%">
+<col style="width: 29%">
+<col style="width: 70%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -290,26 +307,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="methods" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Methods</h1>
-<p><em>*Analysis methods will be included in later part of project</em></p>
+<p>The main question I would like to answer with this project is “What are the key health indicators that predict the likelihood of an individual being diagnosed with diabetes?”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="data-acquisition" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="data-acquisition"><span class="header-section-number">3.1</span> Data acquisition</h2>
-<section id="explain-the-question-to-be-answered-using-the-data" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="explain-the-question-to-be-answered-using-the-data"><span class="header-section-number">3.1.1</span> Explain the question to be answered using the data</h3>
-<p>The main question I would like to answer with this project is “What are the key health indicators that predict the likelihood of an individual being diagnosed with diabetes?”.</p>
-</section>
-<section id="what-will-be-your-outcomes-of-interest-if-any" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="what-will-be-your-outcomes-of-interest-if-any"><span class="header-section-number">3.1.2</span> What will be your outcome(s) of interest (if any)?</h3>
+<p>This data comes from CDC and will be sampled during analysis.</p>
+<section id="outcome-of-interest" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="outcome-of-interest"><span class="header-section-number">3.1.1</span> Outcome of Interest</h3>
 <p>The primary outcome of interest will be whether an individual has been diagnosed with diabetes or not. This outcome will be represented as a binary variable where 1 indicates a diabetes diagnosis and 0 indicates no diabetes.</p>
 </section>
-<section id="what-if-any-specific-predictors-will-you-focus-on" class="level3" data-number="3.1.3">
-<h3 data-number="3.1.3" class="anchored" data-anchor-id="what-if-any-specific-predictors-will-you-focus-on"><span class="header-section-number">3.1.3</span> What (if any) specific predictors will you focus on?</h3>
+<section id="what-if-any-specific-predictors-will-you-focus-on" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="what-if-any-specific-predictors-will-you-focus-on"><span class="header-section-number">3.1.2</span> What (if any) specific predictors will you focus on?</h3>
 <p>The specific predictors I will focus on are age, gender, BMI, consumption of fruits and vegetables, and frequency of exercise. Although these are the main predictors I will focus on, I’ll also use data analytic techniques to identify which predictors are of importance or have relationships with the response variable.</p>
 </section>
-<section id="what-relationspatterns-are-you-looking-for-in-the-data" class="level3" data-number="3.1.4">
-<h3 data-number="3.1.4" class="anchored" data-anchor-id="what-relationspatterns-are-you-looking-for-in-the-data"><span class="header-section-number">3.1.4</span> What relations/patterns are you looking for in the data?</h3>
+<section id="what-relationspatterns-are-you-looking-for-in-the-data" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="what-relationspatterns-are-you-looking-for-in-the-data"><span class="header-section-number">3.1.3</span> What relations/patterns are you looking for in the data?</h3>
 <p>I will look for patterns ad relationships between the predictors and the outcome of diabetes diagnosis. More specifically, I will analyze correlations between individual predictors and the response variable, interaction effects between predictors and the response variable, and predictive models such as logistic regression, decision trees, and machine learning classifiers.</p>
 </section>
 </section>
@@ -319,8 +333,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="statistical-analysis-method" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="statistical-analysis-method"><span class="header-section-number">3.3</span> Statistical analysis method</h2>
-<p>For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDCs website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will utilize cross validation during the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.</p>
+<p>For my analysis, I will first look at the distributions of each variable to identify if the dataset is balanced and outliers. I do not think any data cleaning will need to be done as that was completed when the data was collected from the CDC’s website. Next, I will create a correlation matrix to view the correlations between each predictor and the response variable. After viewing the correlations, I will then use simple linear regression and random forest models to identify variables of importance, these variables will be noted and used later during the modeling phase. I will utilize cross validation during the modeling phase. This section will be filled out more once we are further into the class and have discussed more approaches/methods.</p>
+<section id="logistic-regression" class="level4" data-number="3.3.0.1">
+<h4 data-number="3.3.0.1" class="anchored" data-anchor-id="logistic-regression"><span class="header-section-number">3.3.0.1</span> Logistic Regression</h4>
+<p>Logistic regression will be used to model the relationship between the binary outcome variable and the predictors. This method will help in understanding the influence of each predictor on the likelihood of diabetes diagnosis.</p>
+</section>
+<section id="random-forest" class="level4" data-number="3.3.0.2">
+<h4 data-number="3.3.0.2" class="anchored" data-anchor-id="random-forest"><span class="header-section-number">3.3.0.2</span> Random Forest</h4>
+<p>Random forest, an ensemble learning method, will be used to improve the accuracy and robustness of predictions. It will help in identifying the importance of each predictor in determining the diabetes diagnosis.</p>
+</section>
+<section id="k-nearest-neighbors-knn" class="level4" data-number="3.3.0.3">
+<h4 data-number="3.3.0.3" class="anchored" data-anchor-id="k-nearest-neighbors-knn"><span class="header-section-number">3.3.0.3</span> K-Nearest Neighbors (KNN)</h4>
+<p>KNN will be used as a non-parametric method to classify individuals based on the closest training examples in the feature space. This will provide insights into the influence of neighborhood-based predictions on diabetes diagnosis.</p>
+<p>For my model selection, I referenced ISLR2. <span class="citation" data-cites="ISLR">(<a href="#ref-ISLR" role="doc-biblioref">Gareth James, 2023</a>)</span></p>
 <div style="page-break-after: always;"></div>
+</section>
 </section>
 </section>
 <section id="results" class="level1" data-number="4">
@@ -347,13 +374,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="feature-importance---linear-regression" class="level3" data-number="4.1.3">
 <h3 data-number="4.1.3" class="anchored" data-anchor-id="feature-importance---linear-regression"><span class="header-section-number">4.1.3</span> Feature Importance - Linear Regression</h3>
-<p>*Will fix and put into readable table</p>
-<pre><code>            HighBP             HighChol            CholCheck                  BMI               Smoker               Stroke HeartDiseaseorAttack 
-            1.141777             1.070725             1.011236             1.124242             1.073702             1.071638             1.150480 
-        PhysActivity               Fruits              Veggies    HvyAlcoholConsump        AnyHealthcare          NoDocbcCost              GenHlth 
-            1.140832             1.109908             1.105040             1.013591             1.100212             1.157580             1.743109 
-            MentHlth             PhysHlth             DiffWalk                  Sex                  Age            Education               Income 
-            1.281663             1.697022             1.499052             1.109269             1.326329             1.299898             1.505502 </code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"importance_table.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="../../results/figures/importance_table.png" class="img-fluid" width="213"></p>
+</div>
+</div>
 </section>
 <section id="feature-importance---random-forest" class="level3" data-number="4.1.4">
 <h3 data-number="4.1.4" class="anchored" data-anchor-id="feature-importance---random-forest"><span class="header-section-number">4.1.4</span> Feature Importance - Random Forest</h3>
@@ -368,7 +394,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="basic-statistical-analysis" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="basic-statistical-analysis"><span class="header-section-number">4.2</span> Basic statistical analysis</h2>
-<p><strong><em>*IN PROGRESS</em></strong></p>
 <section id="methods-1" class="level3" data-number="4.2.1">
 <h3 data-number="4.2.1" class="anchored" data-anchor-id="methods-1"><span class="header-section-number">4.2.1</span> Methods</h3>
 <p>After processing and exploring the data, it was discovered that a majority of the features in this dataset are categorical. Therefore, we will be making use of models that are more rigorous to our situation, such as random forest and KNN. However before trying those models, we will first do a simple multinomial logistic regression. Why multinomial? That is because our response variable is not binary, it has three levels to it; typically, logistic regression is used for binary classification. After creating models with all features included, we will go on to look at models with features that fit our importance criteria (i.e.&nbsp;look at the models results when using the most important features).</p>
@@ -411,11 +436,7 @@ Prevalence              0.8453 1.690e-02   0.13780
 Detection Rate          0.8265 3.922e-05   0.02439
 Detection Prevalence    0.9555 1.961e-04   0.04435
 Balanced Accuracy       0.5720 5.011e-01   0.57693</code></pre>
-<p>- Notes (Will be expanded and explained in future update):</p>
-<ul>
-<li><p>Accuracy: 85.09%</p></li>
-<li><p>Target variable may not be balanced</p></li>
-</ul>
+<p>The logistic regression model was applied to the dataset to analyze the relationship between the binary outcome variable (diabetes diagnosis) and the predictors. The model achieved an accuracy of 85.09%. However, the model showed that the target variable might not be balanced, indicating that further data processing might be necessary.</p>
 </section>
 <section id="random-forest---all-features" class="level4" data-number="4.2.3.2">
 <h4 data-number="4.2.3.2" class="anchored" data-anchor-id="random-forest---all-features"><span class="header-section-number">4.2.3.2</span> Random Forest - All Features</h4>
@@ -449,52 +470,88 @@ Prevalence              0.8453    0.0169    0.1378
 Detection Rate          0.8453    0.0000    0.0000
 Detection Prevalence    1.0000    0.0000    0.0000
 Balanced Accuracy       0.5000    0.5000    0.5000</code></pre>
-<p>- Notes (Will be expanded and explained in future update):</p>
-<ul>
-<li><p>Model is only predicting ‘0’, likely an error in model setup</p></li>
-<li><p>Due to inaccurate predictions, accuracy is not applicable.</p></li>
-</ul>
+<p>The random forest model was applied to the dataset to improve the accuracy and robustness of predictions. The model, however, only predicted the class ‘0’, likely due to an error in model setup. This resulted in an accuracy that was not applicable, indicating the need for further refinement of the model.</p>
 </section>
 <section id="knn---all-features" class="level4" data-number="4.2.3.3">
 <h4 data-number="4.2.3.3" class="anchored" data-anchor-id="knn---all-features"><span class="header-section-number">4.2.3.3</span> KNN - All Features</h4>
-<ul>
-<li>in progress</li>
-</ul>
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    X0    X1    X2
+        X0 21270   415  2975
+        X1     0     0     0
+        X2   285    16   539
+
+Overall Statistics
+                                          
+               Accuracy : 0.8553          
+                 95% CI : (0.8509, 0.8596)
+    No Information Rate : 0.8453          
+    P-Value [Acc &gt; NIR] : 4.769e-06       
+                                          
+                  Kappa : 0.1869          
+                                          
+ Mcnemar's Test P-Value : &lt; 2.2e-16       
+
+Statistics by Class:
+
+                     Class: X0 Class: X1 Class: X2
+Sensitivity             0.9868    0.0000   0.15339
+Specificity             0.1407    1.0000   0.98631
+Pos Pred Value          0.8625       NaN   0.64167
+Neg Pred Value          0.6607    0.9831   0.87936
+Prevalence              0.8453    0.0169   0.13780
+Detection Rate          0.8341    0.0000   0.02114
+Detection Prevalence    0.9671    0.0000   0.03294
+Balanced Accuracy       0.5637    0.5000   0.56985</code></pre>
+<p>The KNN model was applied to the dataset and achieved an accuracy of 85.53%. The model’s sensitivity and specificity values indicated that it performed reasonably well, but there was room for improvement, particularly in predicting minority classes.</p>
 </section>
-</section>
-</section>
-<section id="full-analysis" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="full-analysis"><span class="header-section-number">4.3</span> Full analysis</h2>
-<p><strong><em>*To be updated in later portion of project</em></strong></p>
+<section id="model-comparisons" class="level4" data-number="4.2.3.4">
+<h4 data-number="4.2.3.4" class="anchored" data-anchor-id="model-comparisons"><span class="header-section-number">4.2.3.4</span> Model Comparisons</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"results"</span>,<span class="st">"figures"</span>,<span class="st">"model_accuracy_comparison.png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="../../results/figures/model_accuracy_comparison.png" class="img-fluid" width="1050"></p>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
+</section>
+</section>
 </section>
 </section>
 <section id="discussion" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Discussion</h1>
 <section id="summary-and-interpretation" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="summary-and-interpretation"><span class="header-section-number">5.1</span> Summary and Interpretation</h2>
-<p><strong><em>*To be updated in later portion of project</em></strong></p>
+<p>The analysis revealed that BMI, HighBP, HeartDiseaseorAttack, and HvyAlchoholConsump were significant predictors of diabetes diagnosis. Logistic regression and KNN models showed reasonable accuracy, while the random forest model required further refinement. These findings highlight the importance of these health indicators in predicting diabetes and suggest that further data processing and model tuning could improve predictive performance.</p>
 </section>
 <section id="strengths-and-limitations" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="strengths-and-limitations"><span class="header-section-number">5.2</span> Strengths and Limitations</h2>
-<p><strong><em>*To be updated in later portion of project</em></strong></p>
 <ul>
-<li><p>LIMIT: Having a lot of categorical features</p></li>
-<li><p>LIMIT: Having a response variable with 3 levels instead of a binary.</p></li>
+<li><p><strong>Imbalanced Dataset</strong>: The dataset was imbalanced, which affected the model’s performance, particularly in predicting minority classes.</p></li>
+<li><p><strong>Categorical Data Handling</strong>: The handling of categorical variables posed challenges, especially for models like logistic regression and random forest.</p></li>
+<li><p><strong>Model Setup Errors</strong>: The random forest model’s performance indicated potential errors in model setup, necessitating further refinement.</p></li>
 </ul>
 </section>
 <section id="conclusions" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">5.3</span> Conclusions</h2>
-<p><strong><em>*To be updated in later portion of project</em></strong></p>
+<p>The study identified key health indicators that are strongly associated with diabetes diagnosis. Logistic regression and KNN models provided reasonable predictive accuracy, while the random forest model required further refinement. These findings underscore the need for balanced datasets and appropriate handling of categorical variables to improve model performance.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-<section id="references" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> References</h1>
-<p><strong><em>*To be updated in later portion of project</em></strong></p>
+<section id="references" class="level1 unnumbered" data-number="6">
+
+
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">6 References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-ISLR" class="csl-entry" role="listitem">
+Gareth James, T. H., Daniela Witten. (2023). <em>An introduction to statistical learning</em> (2nd ed.).
+</div>
+<div id="ref-ADA" class="csl-entry" role="listitem">
+<em>Warning symptoms</em>. (2024). Retrieved from <a href="https://diabetes.org/about-diabetes/warning-signs-symptoms">https://diabetes.org/about-diabetes/warning-signs-symptoms</a>
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

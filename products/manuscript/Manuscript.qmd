@@ -9,6 +9,7 @@ format:
     toc-location: left
     number-sections: true
     highlight-style: github
+bibliography: ../../assets/dataanalysis-references.bib
 csl: ../../assets/apa.csl
 ---
 
@@ -20,7 +21,7 @@ library(knitr)
 
 # Summary/Abstract
 
-*\*Summary will be finalized in later part of project and will include setup and results*
+Diabetes is a chronic condition that affects millions of people worldwide, characterized by high blood glucose levels and serious complications if not managed properly. This study aims to identify key health indicators predicting the likelihood of an individual being diagnosed with diabetes using a dataset from the UC Irvine Machine Learning Repository, containing over 250,000 instances and 21 features. Three models were utilized: logistic regression, random forest, and K-nearest neighbors (KNN). The analysis revealed that BMI, high blood pressure, heart disease or attack history, and heavy alcohol consumption were significant predictors of diabetes. Logistic regression and KNN models demonstrated reasonable accuracy, while the random forest model required refinement. The study highlights the importance of these health indicators and suggests further data processing and model tuning for improved predictive performance.
 
 {{< pagebreak >}}
 
@@ -28,14 +29,14 @@ library(knitr)
 
 ## General Background Information
 
-*\*more background information will be added later, I will describe what diabetes is, what are the notable influences on diagnosis, and what the dataset provides in relation to other studies on diabetes diagnosis.*
+"Diabetes can lead to severe, and in some cases, life-threatening complications." [@ADA]. Diabetes is a major cause of blindness, kidney failure, heart attacks, stroke, and lower limb amputation. Managing diabetes and its complications places a significant burden on healthcare systems worldwide. Early diagnosis and management are crucial to prevent adverse health outcomes. Several studies have identified various risk factors associated with diabetes, including age, BMI, physical activity, and dietary habits.
 
 ## Description of data and data source
 
 This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions
 
 | Feature              | Description                                                                                                                                                                                                                                                                                                                             |
-|--------------------|----------------------------------------------------|
+|---------------------|---------------------------------------------------|
 | ID                   | Patient ID                                                                                                                                                                                                                                                                                                                              |
 | Diabetes_binary      | 0 = no diabetes 1 = prediabetes or diabetes                                                                                                                                                                                                                                                                                             |
 | HighBP               | 0 = no high BP 1 = high BP                                                                                                                                                                                                                                                                                                              |
@@ -112,6 +113,8 @@ Random forest, an ensemble learning method, will be used to improve the accuracy
 
 KNN will be used as a non-parametric method to classify individuals based on the closest training examples in the feature space. This will provide insights into the influence of neighborhood-based predictions on diabetes diagnosis.
 
+For my model selection, I referenced ISLR2. [@ISLR]
+
 {{< pagebreak >}}
 
 # Results
@@ -132,15 +135,8 @@ knitr::include_graphics(here("results","figures","correlation_matrix.png"))
 
 ### Feature Importance - Linear Regression
 
-\*Will fix and put into readable table
-
-```         
-            HighBP             HighChol            CholCheck                  BMI               Smoker               Stroke HeartDiseaseorAttack 
-            1.141777             1.070725             1.011236             1.124242             1.073702             1.071638             1.150480 
-        PhysActivity               Fruits              Veggies    HvyAlcoholConsump        AnyHealthcare          NoDocbcCost              GenHlth 
-            1.140832             1.109908             1.105040             1.013591             1.100212             1.157580             1.743109 
-            MentHlth             PhysHlth             DiffWalk                  Sex                  Age            Education               Income 
-            1.281663             1.697022             1.499052             1.109269             1.326329             1.299898             1.505502 
+```{r}
+knitr::include_graphics(here("results","figures","importance_table.png"))
 ```
 
 ### Feature Importance - Random Forest
@@ -152,8 +148,6 @@ knitr::include_graphics(here("results","figures","variable_importance.png"))
 Overall, the variables do not show much correlation with one another, however I have a feeling that I may need to do more data processing, i.e. making categorical variables into factors and removing them from the correlation matrix. I decided to include some distributions of variables that I found to be interesting, such as BMI, Age, PhysHlth, and Smoker. After running both a linear and random forest model to determine the most important features, it looks as if BMI, HighBP, HeartDiseaseorAttack, and HvyAlchoholConsump are the most important features to include in the models.
 
 ## Basic statistical analysis
-
-***\*IN PROGRESS***
 
 ### Methods
 
@@ -200,11 +194,7 @@ Detection Prevalence    0.9555 1.961e-04   0.04435
 Balanced Accuracy       0.5720 5.011e-01   0.57693
 ```
 
-\- Notes (Will be expanded and explained in next update):
-
--   Accuracy: 85.09%
-
--   Target variable may not be balanced
+The logistic regression model was applied to the dataset to analyze the relationship between the binary outcome variable (diabetes diagnosis) and the predictors. The model achieved an accuracy of 85.09%. However, the model showed that the target variable might not be balanced, indicating that further data processing might be necessary.
 
 #### Random Forest - All Features
 
@@ -241,15 +231,44 @@ Detection Prevalence    1.0000    0.0000    0.0000
 Balanced Accuracy       0.5000    0.5000    0.5000
 ```
 
-\- Notes (Will be expanded and explained in next update):
-
--   Model is only predicting '0', likely an error in model setup
-
--   Due to inaccurate predictions, accuracy is not applicable.
+The random forest model was applied to the dataset to improve the accuracy and robustness of predictions. The model, however, only predicted the class '0', likely due to an error in model setup. This resulted in an accuracy that was not applicable, indicating the need for further refinement of the model.
 
 #### KNN - All Features
 
--   in progress
+```         
+Confusion Matrix and Statistics
+
+          Reference
+Prediction    X0    X1    X2
+        X0 21270   415  2975
+        X1     0     0     0
+        X2   285    16   539
+
+Overall Statistics
+                                          
+               Accuracy : 0.8553          
+                 95% CI : (0.8509, 0.8596)
+    No Information Rate : 0.8453          
+    P-Value [Acc > NIR] : 4.769e-06       
+                                          
+                  Kappa : 0.1869          
+                                          
+ Mcnemar's Test P-Value : < 2.2e-16       
+
+Statistics by Class:
+
+                     Class: X0 Class: X1 Class: X2
+Sensitivity             0.9868    0.0000   0.15339
+Specificity             0.1407    1.0000   0.98631
+Pos Pred Value          0.8625       NaN   0.64167
+Neg Pred Value          0.6607    0.9831   0.87936
+Prevalence              0.8453    0.0169   0.13780
+Detection Rate          0.8341    0.0000   0.02114
+Detection Prevalence    0.9671    0.0000   0.03294
+Balanced Accuracy       0.5637    0.5000   0.56985
+```
+
+The KNN model was applied to the dataset and achieved an accuracy of 85.53%. The model's sensitivity and specificity values indicated that it performed reasonably well, but there was room for improvement, particularly in predicting minority classes.
 
 #### Model Comparisons
 
@@ -257,32 +276,28 @@ Balanced Accuracy       0.5000    0.5000    0.5000
 knitr::include_graphics(here("results","figures","model_accuracy_comparison.png"))
 ```
 
-## Full analysis
-
-***\*To be updated in later portion of project***
-
 {{< pagebreak >}}
 
 # Discussion
 
 ## Summary and Interpretation
 
-***\*To be updated in later portion of project***
+The analysis revealed that BMI, HighBP, HeartDiseaseorAttack, and HvyAlchoholConsump were significant predictors of diabetes diagnosis. Logistic regression and KNN models showed reasonable accuracy, while the random forest model required further refinement. These findings highlight the importance of these health indicators in predicting diabetes and suggest that further data processing and model tuning could improve predictive performance.
 
 ## Strengths and Limitations
 
-***\*To be updated in later portion of project***
+-   **Imbalanced Dataset**: The dataset was imbalanced, which affected the model's performance, particularly in predicting minority classes.
 
--   LIMIT: Having a lot of categorical features
+-   **Categorical Data Handling**: The handling of categorical variables posed challenges, especially for models like logistic regression and random forest.
 
--   LIMIT: Having a response variable with 3 levels instead of a binary.
+-   **Model Setup Errors**: The random forest model's performance indicated potential errors in model setup, necessitating further refinement.
 
 ## Conclusions
 
-***\*To be updated in later portion of project***
+The study identified key health indicators that are strongly associated with diabetes diagnosis. Logistic regression and KNN models provided reasonable predictive accuracy, while the random forest model required further refinement. These findings underscore the need for balanced datasets and appropriate handling of categorical variables to improve model performance.
 
 {{< pagebreak >}}
 
 # References
 
-***\*To be updated in later portion of project***
+For some reason my bib file was being weird, will try to fix.
