@@ -33,10 +33,10 @@ Diabetes is a chronic condition that affects millions of people worldwide, chara
 
 ## Description of data and data source
 
-This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health). Bellow are the features and there respective descriptions
+This dataset comes from UC Irvine Machine Learning Repository. This data has been gathered and processed from the CDCs website in 2014. This dataset includes over 250,000 instances (observations) and 21 features, ranging from personal information (income/education) to health history (drinking/smoking/physical health)[@UCI]. Bellow are the features and there respective descriptions
 
 | Feature              | Description                                                                                                                                                                                                                                                                                                                             |
-|---------------------|---------------------------------------------------|
+|----------------------|--------------------------------------------------|
 | ID                   | Patient ID                                                                                                                                                                                                                                                                                                                              |
 | Diabetes_binary      | 0 = no diabetes 1 = prediabetes or diabetes                                                                                                                                                                                                                                                                                             |
 | HighBP               | 0 = no high BP 1 = high BP                                                                                                                                                                                                                                                                                                              |
@@ -123,26 +123,34 @@ For my model selection, I referenced ISLR2. [@ISLR]
 
 ### Distribution of all variables
 
+![](images/variable-distributions.png){fig-align="center"}
+
 ```{r}
-knitr::include_graphics(here("results","figures","variable-distributions.png"))
+#knitr::include_graphics(here("results","figures","variable-distributions.png"))
 ```
 
 ### Correlation Matrix
 
+![](images/correlation_matrix.png){fig-align="center"}
+
 ```{r}
-knitr::include_graphics(here("results","figures","correlation_matrix.png"))
+#knitr::include_graphics(here("results","figures","correlation_matrix.png"))
 ```
 
 ### Feature Importance - Linear Regression
 
+![](images/importance_table.png){fig-align="center" width="300"}
+
 ```{r}
-knitr::include_graphics(here("results","figures","importance_table.png"))
+#knitr::include_graphics(here("results","figures","importance_table.png"))
 ```
 
 ### Feature Importance - Random Forest
 
+![](images/variable_importance.png){fig-align="center"}
+
 ```{r}
-knitr::include_graphics(here("results","figures","variable_importance.png"))
+#knitr::include_graphics(here("results","figures","variable_importance.png"))
 ```
 
 Overall, the variables do not show much correlation with one another, however I have a feeling that I may need to do more data processing, i.e. making categorical variables into factors and removing them from the correlation matrix. I decided to include some distributions of variables that I found to be interesting, such as BMI, Age, PhysHlth, and Smoker. After running both a linear and random forest model to determine the most important features, it looks as if BMI, HighBP, HeartDiseaseorAttack, and HvyAlchoholConsump are the most important features to include in the models.
@@ -272,8 +280,10 @@ The KNN model was applied to the dataset and achieved an accuracy of 85.53%. The
 
 #### Model Comparisons
 
+![](images/model_accuracy_comparison.png){fig-align="center"}
+
 ```{r}
-knitr::include_graphics(here("results","figures","model_accuracy_comparison.png"))
+#knitr::include_graphics(here("results","figures","model_accuracy_comparison.png"))
 ```
 
 {{< pagebreak >}}
@@ -285,6 +295,16 @@ knitr::include_graphics(here("results","figures","model_accuracy_comparison.png"
 The analysis revealed that BMI, HighBP, HeartDiseaseorAttack, and HvyAlchoholConsump were significant predictors of diabetes diagnosis. Logistic regression and KNN models showed reasonable accuracy, while the random forest model required further refinement. These findings highlight the importance of these health indicators in predicting diabetes and suggest that further data processing and model tuning could improve predictive performance.
 
 ## Strengths and Limitations
+
+**Strengths:**
+
+-   **Large Dataset**: The study utilized a large dataset with over 250,000 observations, providing a large sample size for reliable statistical analysis and model training.
+
+-   **Comprehensive Features**: The dataset had 21 diverse features ranging from personal information to health history, allowing for a thorough analysis of various health indicators.
+
+-   **Multiple Models**: The use of three different models (logistic regression, random forest, and KNN) provided a comprehensive approach to identifying key predictors and comparing model performances.
+
+**Limitations:**
 
 -   **Imbalanced Dataset**: The dataset was imbalanced, which affected the model's performance, particularly in predicting minority classes.
 
@@ -299,5 +319,3 @@ The study identified key health indicators that are strongly associated with dia
 {{< pagebreak >}}
 
 # References
-
-For some reason my bib file was being weird, will try to fix.
