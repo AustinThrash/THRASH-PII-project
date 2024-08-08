@@ -4,7 +4,7 @@ subtitle: ""
 author: Austin Thrash
 date: today
 format:
-  html:
+  pdf:
     toc: true
     toc-location: left
     number-sections: true
