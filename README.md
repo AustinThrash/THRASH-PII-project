@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: sentence
----
-
 # Overview
 
 Objective: To identify key health indicators that predict the likelihood of an individual being diagnosed with diabetes using the CDC Diabetes Health Indicators dataset from 2014.
